@@ -7,184 +7,374 @@
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
   <script src="/_sdk/element_sdk.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&amp;family=Be+Vietnam+Pro:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Be Vietnam Pro', sans-serif; }
-    .title-font { font-family: 'Playfair Display', serif; }
-    .card-choice { transition: all 0.3s ease; }
-    .card-choice:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
-    .fade-in { animation: fadeIn 0.5s ease forwards; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .stat-bar { transition: width 0.8s ease; }
-    .chart-scroll-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .chart-scroll-wrapper::-webkit-scrollbar { height: 6px; }
-    .chart-scroll-wrapper::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 3px; }
-    .chart-scroll-wrapper::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
-    .chart-scroll-wrapper::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
-    .chart-inner { min-width: 600px; }
-    .chart-inner canvas { width: 100%; display: block; }
+    body { 
+      font-family: 'Outfit', sans-serif; 
+      background-color: #0b0f19;
+    }
+    .title-font { 
+      font-family: 'Playfair Display', serif; 
+    }
+    .glass-panel {
+      background: rgba(17, 24, 39, 0.55);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-2px);
+    }
+    .choice-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .choice-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .fade-in { 
+      animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+    @keyframes fadeIn { 
+      from { opacity: 0; transform: translateY(15px); } 
+      to { opacity: 1; transform: translateY(0); } 
+    }
+    .stat-bar { 
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
+    }
+    .chart-scroll-wrapper { 
+      overflow-x: auto; 
+      -webkit-overflow-scrolling: touch; 
+    }
+    .chart-scroll-wrapper::-webkit-scrollbar { 
+      height: 6px; 
+    }
+    .chart-scroll-wrapper::-webkit-scrollbar-track { 
+      background: rgba(255,255,255,0.02); 
+      border-radius: 3px; 
+    }
+    .chart-scroll-wrapper::-webkit-scrollbar-thumb { 
+      background: rgba(255,255,255,0.15); 
+      border-radius: 3px; 
+    }
+    .chart-scroll-wrapper::-webkit-scrollbar-thumb:hover { 
+      background: rgba(255,255,255,0.3); 
+    }
+    .chart-inner { 
+      min-width: 600px; 
+    }
+    
+    /* Neon Glow classes */
+    .glow-yellow { box-shadow: 0 0 15px rgba(234, 179, 8, 0.25); }
+    .glow-green { box-shadow: 0 0 15px rgba(34, 197, 94, 0.25); }
+    .glow-blue { box-shadow: 0 0 15px rgba(56, 189, 248, 0.25); }
+    .glow-purple { box-shadow: 0 0 15px rgba(168, 85, 247, 0.25); }
+    .glow-red { box-shadow: 0 0 15px rgba(244, 63, 94, 0.25); }
   </style>
   <style>body { box-sizing: border-box; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- <script src="/_sdk/telemetry_sdk.js"></script></head>
- <body class="h-full">
-  <div id="app" class="h-full w-full bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#0f3460] text-white overflow-auto">
+  <script src="/_sdk/telemetry_sdk.js"></script>
+ </head>
+ <body class="h-full text-gray-100">
+  <div id="app" class="h-full w-full bg-gradient-to-br from-[#0c0f1d] via-[#081229] to-[#040814] text-white overflow-auto relative">
+   
+   <!-- Ambient Lights in Background -->
+   <div class="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none"></div>
+   <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-950/10 rounded-full blur-[120px] pointer-events-none"></div>
+
    <!-- Start Screen -->
-   <div id="screen-start" class="flex flex-col items-center justify-center min-h-full p-6 text-center fade-in">
-    <div class="text-6xl mb-6">
-     ⭐
+   <div id="screen-start" class="flex flex-col items-center justify-center min-h-full p-6 md:p-12 text-center fade-in max-w-4xl mx-auto relative z-10">
+    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-400/10 border border-yellow-400/20 mb-6 glow-yellow">
+     <span class="text-4xl">⭐</span>
     </div>
-    <h1 id="main-title" class="title-font text-4xl md:text-5xl font-900 mb-4 bg-gradient-to-r from-yellow-300 to-red-400 bg-clip-text text-transparent">Lập Trình Viên Theo Tư Tưởng HCM</h1>
-    <p class="text-lg text-gray-300 mb-8 max-w-lg">Áp dụng 4 đức tính Cần - Kiệm - Liêm - Chính vào hành trình trở thành lập trình viên xuất sắc</p>
-    <div class="grid grid-cols-2 gap-4 mb-8 max-w-md w-full md:grid-cols-5">
-     <div class="bg-white/10 rounded-xl p-4 text-center">
-      <div class="text-2xl mb-1">
-       🔥
-      </div>
-      <div class="font-semibold text-yellow-300 text-sm">
-       Cần
-      </div>
-      <div class="text-xs text-gray-400">
-       Siêng năng
-      </div>
+    
+    <h1 id="main-title" class="title-font text-4xl md:text-6xl font-black mb-4 tracking-tight bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent drop-shadow-sm">
+     Lập Trình Viên Theo Tư Tưởng HCM
+    </h1>
+    
+    <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl font-light leading-relaxed">
+     Áp dụng sâu sắc 4 đức tính cốt lõi <span class="text-yellow-300 font-medium">Cần - Kiệm - Liêm - Chính</span> và giữ gìn <span class="text-red-400 font-medium">Sức Khỏe</span> trên hành trình trở thành lập trình viên xuất chúng.
+    </p>
+
+    <!-- Introduce Virtues -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10 w-full">
+     
+     <div class="glass-card rounded-2xl p-5 border border-yellow-500/10 hover:border-yellow-500/30">
+      <div class="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center text-2xl mx-auto mb-3">🔥</div>
+      <div class="font-bold text-yellow-300 text-base">Cần</div>
+      <div class="text-xs text-gray-400 mt-1 font-light">Siêng năng học hỏi, kiên trì khắc phục lỗi</div>
      </div>
-     <div class="bg-white/10 rounded-xl p-4 text-center">
-      <div class="text-2xl mb-1">
-       💎
-      </div>
-      <div class="font-semibold text-green-300 text-sm">
-       Kiệm
-      </div>
-      <div class="text-xs text-gray-400">
-       Tiết kiệm
-      </div>
+
+     <div class="glass-card rounded-2xl p-5 border border-green-500/10 hover:border-green-500/30">
+      <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-2xl mx-auto mb-3">💎</div>
+      <div class="font-bold text-green-300 text-base">Kiệm</div>
+      <div class="text-xs text-gray-400 mt-1 font-light">Tối ưu hóa mã nguồn, tiết kiệm tài nguyên</div>
      </div>
-     <div class="bg-white/10 rounded-xl p-4 text-center">
-      <div class="text-2xl mb-1">
-       🛡️
-      </div>
-      <div class="font-semibold text-blue-300 text-sm">
-       Liêm
-      </div>
-      <div class="text-xs text-gray-400">
-       Trong sạch
-      </div>
+
+     <div class="glass-card rounded-2xl p-5 border border-blue-500/10 hover:border-blue-500/30">
+      <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-2xl mx-auto mb-3">🛡️</div>
+      <div class="font-bold text-blue-300 text-base">Liêm</div>
+      <div class="text-xs text-gray-400 mt-1 font-light">Trong sạch, tôn trọng bản quyền & bảo mật</div>
      </div>
-     <div class="bg-white/10 rounded-xl p-4 text-center">
-      <div class="text-2xl mb-1">
-       ⚖️
-      </div>
-      <div class="font-semibold text-purple-300 text-sm">
-       Chính
-      </div>
-      <div class="text-xs text-gray-400">
-       Ngay thẳng
-      </div>
+
+     <div class="glass-card rounded-2xl p-5 border border-purple-500/10 hover:border-purple-500/30">
+      <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-2xl mx-auto mb-3">⚖️</div>
+      <div class="font-bold text-purple-300 text-base">Chính</div>
+      <div class="text-xs text-gray-400 mt-1 font-light">Thẳng thắn chịu trách nhiệm, trung thực báo cáo</div>
      </div>
-     <div class="bg-white/10 rounded-xl p-4 text-center">
-      <div class="text-2xl mb-1">
-       ❤️
-      </div>
-      <div class="font-semibold text-red-300 text-sm">
-       Sức Khỏe
-      </div>
-      <div class="text-xs text-gray-400">
-       Năng lượng
-      </div>
+
+     <div class="glass-card rounded-2xl p-5 border border-red-500/10 hover:border-red-500/30 col-span-2 md:col-span-1">
+      <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center text-2xl mx-auto mb-3">❤️</div>
+      <div class="font-bold text-red-400 text-base">Sức Khỏe</div>
+      <div class="text-xs text-gray-400 mt-1 font-light">Cân bằng cuộc sống, rèn luyện thể chất lâu dài</div>
      </div>
-    </div><button onclick="startGame()" class="bg-gradient-to-r from-yellow-400 to-red-500 text-black font-bold px-8 py-4 rounded-full text-lg hover:scale-105 transition-transform">Bắt Đầu Hành Trình</button>
-   </div><!-- Game Screen -->
-   <div id="screen-game" class="hidden min-h-full p-4 md:p-6 fade-in">
+
+    </div>
+
+    <button onclick="startGame()" class="px-10 py-4.5 bg-gradient-to-r from-yellow-400 via-amber-500 to-red-500 text-[#0f172a] font-bold text-lg rounded-full hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-500/20 active:scale-95 border border-yellow-300/30">
+     Bắt Đầu Hành Trình
+    </button>
+   </div>
+
+   <!-- Game Screen -->
+   <div id="screen-game" class="hidden min-h-full p-4 md:p-8 fade-in relative z-10">
     <div class="max-w-4xl mx-auto">
-     <!-- Stats bar -->
-     <div class="grid grid-cols-4 gap-2 mb-4 md:grid-cols-5">
-      <div class="text-center">
-       <div class="text-xs text-yellow-300 font-semibold">
-        🔥 Cần
+     
+     <!-- Floating Stats Header -->
+     <div class="glass-panel rounded-3xl p-5 mb-8 border border-white/10 shadow-2xl">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+       
+       <div class="bg-black/20 rounded-xl p-3 border border-yellow-500/10 relative overflow-hidden group">
+        <div class="flex justify-between items-center mb-1">
+         <span class="text-xs text-yellow-300 font-semibold uppercase tracking-wider flex items-center gap-1">🔥 Cần</span>
+         <span id="val-can" class="text-xs font-bold bg-yellow-500/20 text-yellow-300 px-1.5 py-0.5 rounded">5</span>
+        </div>
+        <div class="bg-gray-800 rounded-full h-2 mt-2">
+         <div id="bar-can" class="stat-bar bg-gradient-to-r from-yellow-500 to-amber-400 h-full rounded-full glow-yellow" style="width:50%"></div>
+        </div>
        </div>
-       <div class="bg-white/10 rounded-full h-2 mt-1">
-        <div id="bar-can" class="stat-bar bg-yellow-400 h-2 rounded-full" style="width:50%"></div>
+
+       <div class="bg-black/20 rounded-xl p-3 border border-green-500/10 relative overflow-hidden">
+        <div class="flex justify-between items-center mb-1">
+         <span class="text-xs text-green-300 font-semibold uppercase tracking-wider flex items-center gap-1">💎 Kiệm</span>
+         <span id="val-kiem" class="text-xs font-bold bg-green-500/20 text-green-300 px-1.5 py-0.5 rounded">5</span>
+        </div>
+        <div class="bg-gray-800 rounded-full h-2 mt-2">
+         <div id="bar-kiem" class="stat-bar bg-gradient-to-r from-green-500 to-emerald-400 h-full rounded-full glow-green" style="width:50%"></div>
+        </div>
        </div>
-       <div id="val-can" class="text-xs mt-1">
-        5
+
+       <div class="bg-black/20 rounded-xl p-3 border border-blue-500/10 relative overflow-hidden">
+        <div class="flex justify-between items-center mb-1">
+         <span class="text-xs text-blue-300 font-semibold uppercase tracking-wider flex items-center gap-1">🛡️ Liêm</span>
+         <span id="val-liem" class="text-xs font-bold bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded">5</span>
+        </div>
+        <div class="bg-gray-800 rounded-full h-2 mt-2">
+         <div id="bar-liem" class="stat-bar bg-gradient-to-r from-blue-500 to-sky-400 h-full rounded-full glow-blue" style="width:50%"></div>
+        </div>
        </div>
+
+       <div class="bg-black/20 rounded-xl p-3 border border-purple-500/10 relative overflow-hidden">
+        <div class="flex justify-between items-center mb-1">
+         <span class="text-xs text-purple-300 font-semibold uppercase tracking-wider flex items-center gap-1">⚖️ Chính</span>
+         <span id="val-chinh" class="text-xs font-bold bg-purple-500/20 text-purple-300 px-1.5 py-0.5 rounded">5</span>
+        </div>
+        <div class="bg-gray-800 rounded-full h-2 mt-2">
+         <div id="bar-chinh" class="stat-bar bg-gradient-to-r from-purple-500 to-indigo-400 h-full rounded-full glow-purple" style="width:50%"></div>
+        </div>
+       </div>
+
+       <div class="bg-black/20 rounded-xl p-3 border border-red-500/10 relative overflow-hidden col-span-2 md:col-span-1">
+        <div class="flex justify-between items-center mb-1">
+         <span class="text-xs text-red-300 font-semibold uppercase tracking-wider flex items-center gap-1">❤️ Sức Khỏe</span>
+         <span id="val-health" class="text-xs font-bold bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded">10</span>
+        </div>
+        <div class="bg-gray-800 rounded-full h-2 mt-2">
+         <div id="bar-health" class="stat-bar bg-gradient-to-r from-red-500 to-rose-400 h-full rounded-full glow-red" style="width:100%"></div>
+        </div>
+       </div>
+
       </div>
-      <div class="text-center">
-       <div class="text-xs text-green-300 font-semibold">
-        💎 Kiệm
-       </div>
-       <div class="bg-white/10 rounded-full h-2 mt-1">
-        <div id="bar-kiem" class="stat-bar bg-green-400 h-2 rounded-full" style="width:50%"></div>
-       </div>
-       <div id="val-kiem" class="text-xs mt-1">
-        5
-       </div>
-      </div>
-      <div class="text-center">
-       <div class="text-xs text-blue-300 font-semibold">
-        🛡️ Liêm
-       </div>
-       <div class="bg-white/10 rounded-full h-2 mt-1">
-        <div id="bar-liem" class="stat-bar bg-blue-400 h-2 rounded-full" style="width:50%"></div>
-       </div>
-       <div id="val-liem" class="text-xs mt-1">
-        5
-       </div>
-      </div>
-      <div class="text-center">
-       <div class="text-xs text-purple-300 font-semibold">
-        ⚖️ Chính
-       </div>
-       <div class="bg-white/10 rounded-full h-2 mt-1">
-        <div id="bar-chinh" class="stat-bar bg-purple-400 h-2 rounded-full" style="width:50%"></div>
-       </div>
-       <div id="val-chinh" class="text-xs mt-1">
-        5
-       </div>
-      </div>
-      <div class="text-center">
-       <div class="text-xs text-red-300 font-semibold">
-        ❤️ Sức Khỏe
-       </div>
-       <div class="bg-white/10 rounded-full h-2 mt-1">
-        <div id="bar-health" class="stat-bar bg-red-400 h-2 rounded-full" style="width:100%"></div>
-       </div>
-       <div id="val-health" class="text-xs mt-1">
-        10
-       </div>
-      </div>
-     </div><!-- Round info -->
-     <div class="text-center mb-4">
-      <span class="bg-white/10 px-4 py-1 rounded-full text-sm">Màn <span id="round-num">1</span>/10</span>
-     </div><!-- Scenario -->
-     <div class="mb-6 text-center">
-      <div id="scenario-image" class="text-6xl mb-4 h-24 flex items-center justify-center"></div>
-      <div id="scenario-text" class="text-center text-lg md:text-xl font-semibold px-4"></div>
-     </div><!-- Choices -->
-     <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"></div><!-- Event result -->
-     <div id="event-result" class="hidden text-center bg-white/10 rounded-xl p-6 mb-4 fade-in">
-      <div id="result-image" class="text-6xl mb-4 h-24 flex items-center justify-center"></div>
-      <p id="event-text" class="text-lg mb-3"></p>
-      <div id="event-stats" class="text-sm text-gray-300"></div><button onclick="nextRound()" class="mt-4 bg-white/20 hover:bg-white/30 px-6 py-2 rounded-full font-semibold transition">Tiếp tục →</button>
      </div>
+
+     <!-- Round info -->
+     <div class="text-center mb-6">
+      <span class="bg-white/5 border border-white/10 px-5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-widest text-gray-400">
+       Tình huống <span id="round-num" class="text-yellow-400">1</span> / 10
+      </span>
+     </div>
+
+     <!-- Scenario Content Box -->
+     <div class="glass-panel rounded-3xl p-6 md:p-8 mb-8 border border-white/10 text-center shadow-xl">
+      <div id="scenario-image" class="text-7xl mb-6 h-20 flex items-center justify-center animate-bounce"></div>
+      <div id="scenario-text" class="text-xl md:text-2xl font-bold leading-relaxed text-white max-w-2xl mx-auto"></div>
+     </div>
+
+     <!-- Choices Container -->
+     <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
+
+     <!-- Choice Event Result Panel -->
+     <div id="event-result" class="hidden glass-panel rounded-3xl p-6 md:p-8 mb-8 border border-white/20 shadow-2xl fade-in text-center relative overflow-hidden">
+      <!-- Light aura background -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-48 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div id="result-image" class="text-7xl mb-5 h-20 flex items-center justify-center"></div>
+      
+      <h3 class="text-lg uppercase tracking-wider text-yellow-400 font-bold mb-2">Quyết Định Của Bạn Dẫn Đến:</h3>
+      <p id="event-text" class="text-lg text-gray-100 max-w-xl mx-auto leading-relaxed mb-6 font-light"></p>
+      
+      <div class="inline-flex flex-wrap items-center justify-center gap-3 bg-black/30 px-5 py-3 rounded-2xl border border-white/5">
+       <span class="text-xs text-gray-400 mr-1 font-semibold uppercase tracking-wider">Thay đổi:</span>
+       <div id="event-stats" class="flex flex-wrap justify-center gap-2"></div>
+      </div>
+      
+      <div class="mt-8">
+       <button onclick="nextRound()" class="bg-gradient-to-r from-yellow-400 via-amber-500 to-amber-600 text-slate-900 font-bold px-8 py-3.5 rounded-full shadow-lg hover:shadow-yellow-500/20 hover:scale-105 active:scale-95 transition-all">
+        Tiếp tục hành trình →
+       </button>
+      </div>
+     </div>
+
     </div>
-   </div><!-- Result Screen -->
-   <div id="screen-result" class="hidden min-h-full p-4 md:p-6 fade-in">
-    <div class="max-w-3xl mx-auto text-center">
-     <h2 class="title-font text-3xl md:text-4xl font-bold mb-2">Kết Thúc Hành Trình</h2>
-     <p id="ending-text" class="text-lg text-gray-300 mb-6"></p>
-      <div class="bg-white/10 rounded-2xl p-4 mb-6">
+   </div>
+
+   <!-- Result Screen -->
+   <div id="screen-result" class="hidden min-h-full p-4 md:p-8 fade-in relative z-10">
+    <div class="max-w-4xl mx-auto">
+     
+     <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-400/10 border border-yellow-400/20 mb-4 glow-yellow">
+       <span class="text-3xl">🏁</span>
+      </div>
+      <h2 class="title-font text-3xl md:text-5xl font-black mb-2 bg-gradient-to-r from-yellow-300 via-amber-400 to-red-400 bg-clip-text text-transparent">Hành Trình Trưởng Thành</h2>
+      <p class="text-gray-400 text-sm md:text-base">Kết quả đánh giá phẩm chất và đạo đức lập trình viên</p>
+     </div>
+
+     <!-- Tab Navigation Buttons -->
+     <div class="flex justify-center p-1 bg-black/40 rounded-2xl border border-white/10 max-w-lg mx-auto mb-8">
+      <button onclick="switchTab('overview')" id="tab-btn-overview" class="flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300 bg-white/10 text-white shadow-md">
+       Tổng Quan
+      </button>
+      <button onclick="switchTab('moral')" id="tab-btn-moral" class="flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-400 hover:text-white">
+       Hồ Sơ Đạo Đức
+      </button>
+      <button onclick="switchTab('log')" id="tab-btn-log" class="flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-400 hover:text-white">
+       Nhật Ký Quyết Định
+      </button>
+     </div>
+
+     <!-- Tab Content Panels -->
+     
+     <!-- TAB 1: OVERVIEW -->
+     <div id="tab-content-overview" class="space-y-6">
+      
+      <!-- Diagnostic Profile Card -->
+      <div class="glass-panel rounded-3xl p-6 md:p-8 border border-white/10 shadow-2xl relative overflow-hidden flex flex-col md:flex-row gap-6 items-center">
+       <!-- Left Side: Emoji avatar -->
+       <div id="profile-avatar-container" class="flex-shrink-0 w-24 h-24 md:w-32 md:h-32 rounded-full bg-gradient-to-br from-amber-400/20 to-red-500/20 border border-amber-400/30 flex items-center justify-center text-5xl md:text-6xl glow-yellow">
+        👑
+       </div>
+       <!-- Right Side: Details -->
+       <div class="text-center md:text-left flex-1">
+        <span class="text-xs font-bold text-yellow-400 bg-yellow-400/10 border border-yellow-400/20 px-3 py-1 rounded-full uppercase tracking-wider">Danh hiệu đạt được</span>
+        <h3 id="ending-text" class="text-2xl md:text-3xl font-black mt-3 text-white"></h3>
+        <p id="ending-story" class="text-gray-300 mt-3 font-light leading-relaxed"></p>
+       </div>
+      </div>
+
+      <!-- Final Stats Grid -->
+      <div id="final-stats" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
+
+      <!-- Chart Container -->
+      <div class="glass-panel rounded-3xl p-5 border border-white/10 shadow-2xl">
+       <h4 class="text-sm font-bold uppercase tracking-wider text-gray-400 mb-4 px-1 flex items-center gap-2">
+        <span class="w-2.5 h-2.5 bg-yellow-400 rounded-full animate-pulse"></span> Biểu đồ biến động chỉ số qua 10 vòng
+       </h4>
        <div class="chart-scroll-wrapper">
-        <div class="chart-inner">
-         <canvas id="chart-canvas" height="250"></canvas>
+        <div class="chart-inner bg-black/20 rounded-2xl border border-white/5 p-2">
+         <canvas id="chart-canvas" height="260"></canvas>
         </div>
        </div>
       </div>
-     <div id="final-stats" class="grid grid-cols-4 gap-3 mb-6"></div>
-     <div id="ending-story" class="bg-white/5 rounded-xl p-6 mb-6 text-left"></div><button onclick="resetGame()" class="bg-gradient-to-r from-yellow-400 to-red-500 text-black font-bold px-8 py-3 rounded-full hover:scale-105 transition-transform">Chơi Lại</button>
+
+     </div>
+
+     <!-- TAB 2: MORAL DIAGNOSTIC -->
+     <div id="tab-content-moral" class="hidden space-y-6">
+      
+      <!-- Uncle Ho's Advice Box -->
+      <div class="relative rounded-3xl p-6 md:p-8 border border-amber-500/20 shadow-2xl overflow-hidden bg-gradient-to-r from-amber-950/20 to-yellow-950/20">
+       <div class="absolute top-0 right-0 w-32 h-32 bg-amber-400/5 rounded-full blur-2xl pointer-events-none"></div>
+       <div class="flex gap-4 items-start">
+        <div class="text-4xl">📜</div>
+        <div>
+         <h3 class="text-lg font-bold text-amber-300 mb-2 uppercase tracking-wide">Lời Dạy Của Bác Hồ & Lời Khuyên Cho Bạn</h3>
+         <blockquote id="ho-quote" class="text-gray-300 italic font-light border-l-2 border-amber-400/40 pl-4 py-1 leading-relaxed my-3 text-base">
+         </blockquote>
+         <p id="ho-reflection" class="text-gray-300 mt-4 leading-relaxed font-light text-sm md:text-base bg-black/20 p-4 rounded-xl border border-white/5"></p>
+        </div>
+       </div>
+      </div>
+
+      <!-- Virtue Scores & Dynamic Advice Details -->
+      <div class="glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl">
+       <h3 class="text-lg font-bold uppercase tracking-wide text-gray-100 mb-6 flex items-center gap-2">
+        📊 Đánh Giá Chi Tiết 4 Phẩm Chất
+       </h3>
+       <div id="virtues-advice-container" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Dynamic virtue cards will be inserted here -->
+       </div>
+      </div>
+
+      <!-- Achievements Section -->
+      <div class="glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl">
+       <h3 class="text-lg font-bold uppercase tracking-wide text-gray-100 mb-6 flex items-center gap-2">
+        🏆 Thành Tựu Đã Đạt Được (<span id="unlocked-count" class="text-yellow-400">0</span>/8)
+       </h3>
+       
+       <div id="achievements-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Achievements will dynamically load here -->
+       </div>
+      </div>
+
+     </div>
+
+     <!-- TAB 3: DECISION LOG -->
+     <div id="tab-content-log" class="hidden space-y-6">
+      <div class="glass-panel rounded-3xl p-6 border border-white/10 shadow-2xl">
+       <h3 class="text-lg font-bold uppercase tracking-wide text-gray-100 mb-6">
+        📋 Nhật Ký Các Quyết Định Đã Chọn
+       </h3>
+       <div id="decision-timeline" class="space-y-6 relative before:absolute before:top-4 before:bottom-4 before:left-6 before:w-[2px] before:bg-white/10">
+        <!-- Decision elements will render here -->
+       </div>
+      </div>
+     </div>
+
+     <div class="text-center mt-10">
+      <button onclick="resetGame()" class="bg-gradient-to-r from-yellow-400 via-amber-500 to-red-500 text-slate-950 font-bold px-10 py-4 rounded-full shadow-lg hover:shadow-yellow-500/20 hover:scale-105 active:scale-95 transition-all">
+       Chơi Lại Hành Trình
+      </button>
+     </div>
+
     </div>
    </div>
+
   </div>
+
   <script>
 const scenarios = [
   { text: "Bạn mới vào công ty. Dự án đầu tiên có deadline gấp, bạn sẽ:", image: "💻", choices: [
@@ -247,99 +437,261 @@ const scenarios = [
     { text: "Viết chi tiết với số liệu minh chứng cụ thể", effects: {can:3,kiem:1,liem:2,chinh:2,health:0}, icon: "📊", event: "Báo cáo chuyên nghiệp giúp sếp hiểu rõ đóng góp. Thưởng xứng đáng." },
     { text: "Nhận thêm công của người khác vào báo cáo", effects: {can:0,kiem:0,liem:-3,chinh:-3,health:0}, icon: "🔥", event: "Team phát hiện. Bạn mất hoàn toàn sự tin tưởng của đồng nghiệp." }
   ]},
-  // --- 14 câu hỏi mới ---
   { text: "Bạn được yêu cầu viết tài liệu project nhưng công việc rất bận, bạn sẽ:", image: "📚", choices: [
     { text: "Viết tài liệu chi tiết, chỉnh sửa kỹ trước khi gửi", effects: {can:2,kiem:0,liem:1,chinh:2,health:-1}, icon: "✍️", event: "Tài liệu rõ ràng, team mới dễ onboard. Sếp khen ngợi chuyên nghiệp." },
-    { text: "Viết sơ sài, copy từ template cũ không update", effects: {can:0,kiem:1,liem:-1,chinh:-2,health:0}, icon: "😑", event: "Team nhơi nhới khi đọc. Ai cũng phải hỏi lại bạn." },
-    { text: "Hỏi junior xem họ có thể viết không", effects: {can:0,kiem:2,liem:0,chinh:0,health:0}, icon: "🙋", event: "Junior viết nhưng thiếu chi tiết. Bạn phải fix lại anyway." },
-    { text: "Tối ưu hóa, viết tài liệu ngắn gọn mà đầy đủ", effects: {can:1,kiem:3,liem:1,chinh:1,health:0}, icon: "🎯", event: "Tài liệu vừa vặn - chi tiết đủ nhưng không dài dòng. Mọi người hài lòng." }
+    { text: "Viết sơ sài, copy từ template cũ không update", effects: {can:0,kiem:1,liem:-1,chinh:-2,health:0}, icon: "😑", event: "Team bực bội khi đọc. Ai cũng phải hỏi lại bạn." },
+    { text: "Hỏi junior xem họ có thể viết không", effects: {can:0,kiem:2,liem:0,chinh:0,health:0}, icon: "🙋", event: "Junior viết nhưng thiếu chi tiết. Bạn phải chỉnh sửa lại khá nhiều." },
+    { text: "Tối ưu hóa, viết tài liệu ngắn gọn mà đầy đủ", effects: {can:1,kiem:3,liem:1,chinh:1,health:0}, icon: "🎯", event: "Tài liệu vừa vặn - ngắn gọn nhưng đủ thông tin cần thiết." }
   ]},
-  { text: "Công ty có cuộc họp bí mật, bạn thừa nghe thông tin nhạy cảm:", image: "🤫", choices: [
-    { text: "Chia sẻ ngay cho bạn bè để 'giúp' họ chuẩn bị", effects: {can:0,kiem:0,liem:-3,chinh:-3,health:0}, icon: "💣", event: "Bạn bị phát hiện. Công ty sa thải bạn vì tung tin nội bộ." },
-    { text: "Giữ kín hoàn toàn, không nói với ai", effects: {can:0,kiem:0,liem:2,chinh:3,health:0}, icon: "🤐", event: "Sếp sau này biết bạn giữ được bí mật. Tín nhiệm tăng vọt." },
-    { text: "Chỉ chia sẻ với người thân gần nhất", effects: {can:-1,kiem:-1,liem:-2,chinh:-1,health:0}, icon: "😬", event: "Tin tỏa ra từ từ. Tín dụng bạn bị tổn hại." },
-    { text: "Báo cáo cho cấp quản lý trực tiếp nếu có vấn đề", effects: {can:1,kiem:0,liem:3,chinh:3,health:0}, icon: "📢", event: "Bạn xử lý đúng. Công ty cảnh báo nội bộ nhưng bạn được tin tưởng." }
+  { text: "Công ty có cuộc họp bí mật, bạn vô tình nghe thấy thông tin nhạy cảm:", image: "🤫", choices: [
+    { text: "Chia sẻ ngay cho bạn bè để 'giúp' họ chuẩn bị", effects: {can:0,kiem:0,liem:-3,chinh:-3,health:0}, icon: "💣", event: "Bạn bị phát hiện làm rò rỉ tin nội bộ, công ty kỷ luật bạn nặng nề." },
+    { text: "Giữ kín hoàn toàn, không nói với ai", effects: {can:0,kiem:0,liem:2,chinh:3,health:0}, icon: "🤐", event: "Sếp sau này biết bạn giữ được bí mật. Sự tin cậy dành cho bạn tăng cao." },
+    { text: "Chỉ chia sẻ với người đồng nghiệp thân thiết nhất", effects: {can:-1,kiem:-1,liem:-2,chinh:-1,health:0}, icon: "😬", event: "Tin đồn bắt đầu lan rộng từ đồng nghiệp đó. Danh tiếng của bạn bị ảnh hưởng." },
+    { text: "Báo cáo cho cấp quản lý trực tiếp nếu có vấn đề nghiêm trọng", effects: {can:1,kiem:0,liem:3,chinh:3,health:0}, icon: "📢", event: "Bạn xử lý chuyên nghiệp và được ban lãnh đạo khen ngợi." }
   ]},
   { text: "Dự án của bạn thất bại sau 6 tháng làm việc chăm chỉ:", image: "💔", choices: [
-    { text: "Nhận trách nhiệm, phân tích bài học rút ra", effects: {can:1,kiem:0,liem:2,chinh:3,health:0}, icon: "📖", event: "Sếp khen tinh thần chịu trách nhiệm. Bạn được giao dự án mới." },
-    { text: "Đổ lỗi cho team, client, hoặc điều kiện bên ngoài", effects: {can:-1,kiem:0,liem:-2,chinh:-3,health:0}, icon: "😤", event: "Mọi người cảm thấy bạn né tránh. Uy tín giảm sút." },
-    { text: "Im lặng và cố gắng xóa dấu vết", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:-1}, icon: "😰", event: "Sếp phát hiện. Bạn vừa mất công việc vừa mất uy tín." },
-    { text: "Lên kế hoạch cải thiện cụ thể cho dự án tiếp theo", effects: {can:3,kiem:1,liem:1,chinh:2,health:0}, icon: "🚀", event: "Sếp ấn tượng với tinh thần học hỏi. Bạn được cơ hội chứng tỏ lại." }
+    { text: "Nhận trách nhiệm, phân tích bài học rút ra", effects: {can:1,kiem:0,liem:2,chinh:3,health:0}, icon: "📖", event: "Sếp đánh giá cao sự trưởng thành và tinh thần chịu trách nhiệm của bạn." },
+    { text: "Đổ lỗi cho team, khách hàng, hoặc thời gian gấp", effects: {can:-1,kiem:0,liem:-2,chinh:-3,health:0}, icon: "😤", event: "Mọi người cảm thấy bạn né tránh trách nhiệm. Uy tín giảm sút." },
+    { text: "Im lặng và cố gắng tìm cách che giấu sai sót", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:-1}, icon: "😰", event: "Mọi người phát hiện ra lỗi vẫn ở đó. Bạn mất điểm nghiêm trọng." },
+    { text: "Đề xuất kế hoạch cải thiện cụ thể cho các dự án sau", effects: {can:3,kiem:1,liem:1,chinh:2,health:0}, icon: "🚀", event: "Sếp ấn tượng với thái độ tích cực học hỏi từ thất bại." }
   ]},
-  { text: "Bạn phát hiện đồng nghiệp ngang hàng nhận hối lộ từ vendor:", image: "💰", choices: [
-    { text: "Im lặng, không can thiệp vì sợ mất lòng", effects: {can:-2,kiem:0,liem:-2,chinh:-2,health:0}, icon: "😰", event: "Hành vi tiếp tục. Công ty bị ảnh hưởng và bạn cứ vờ không biết." },
-    { text: "Báo cáo trực tiếp cho sếp hoặc bộ phận nhân sự", effects: {can:0,kiem:0,liem:3,chinh:3,health:0}, icon: "🚨", event: "Công ty xử lý. Đồng nghiệp bị kỷ luật. Bạn được đánh giá cao về đạo đức." },
-    { text: "Nói chuyện riêng với đồng nghiệp, yêu cầu dừng", effects: {can:1,kiem:1,liem:2,chinh:2,health:0}, icon: "💬", event: "Đồng nghiệp nhận lỗi và dừng. Bạn giúp anh ta tránh khỏi thảm họa." },
-    { text: "Dùng thông tin này để nhân chuyện, tạo áp lực", effects: {can:-2,kiem:-2,liem:-3,chinh:-3,health:0}, icon: "⚡", event: "Bạn trở thành kẻ tống tiền. Cả hai bị bắt cuối cùng." }
+  { text: "Bạn phát hiện đồng nghiệp ngang hàng nhận hối lộ từ nhà cung cấp (vendor):", image: "💰", choices: [
+    { text: "Im lặng, không can thiệp vì sợ mang tiếng xấu", effects: {can:-2,kiem:0,liem:-2,chinh:-2,health:0}, icon: "😰", event: "Vụ việc vỡ lở sau này. Bạn cũng bị khiển trách vì che giấu." },
+    { text: "Báo cáo trung thực cho bộ phận nhân sự hoặc quản lý", effects: {can:0,kiem:0,liem:3,chinh:3,health:0}, icon: "🚨", event: "Công ty giải quyết kịp thời. Bạn được tuyên dương về lòng trung thực." },
+    { text: "Nói chuyện thẳng thắn với đồng nghiệp khuyên họ dừng lại", effects: {can:1,kiem:1,liem:2,chinh:2,health:0}, icon: "💬", event: "Đồng nghiệp nhận ra sai lầm và chủ động khắc phục hậu quả." },
+    { text: "Dùng thông tin này để ép đồng nghiệp làm việc thay mình", effects: {can:-2,kiem:-2,liem:-3,chinh:-3,health:0}, icon: "⚡", event: "Hành vi tống tiền bị phát hiện. Cả hai cùng bị sa thải." }
   ]},
-  { text: "Bạn được thăng chức nhưng không phải người bạn kỳ vọng:", image: "🎖️", choices: [
-    { text: "Làm việc tốt, chứng tỏ năng lực mình thực sự xứng đáng", effects: {can:3,kiem:1,liem:1,chinh:2,health:-1}, icon: "💪", event: "Dù bất ngờ, bạn chứng minh khả năng. Mọi người phục." },
-    { text: "Phàn nàn, cho rằng công ty chọn sai người", effects: {can:-2,kiem:0,liem:-1,chinh:-2,health:0}, icon: "😤", event: "Sếp hối hận vì chọn bạn. Cơ hội tiếp theo bị loại." },
-    { text: "Làm việc tạm bợ, chờ cơ hội để rời công ty", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:0}, icon: "😒", event: "Sếp phát hiện thiếu tích cực. Bạn không được cơ hội tiếp theo." },
-    { text: "Học hỏi từ người kỳ vọng ban đầu, cơ hội tốt sau", effects: {can:2,kiem:1,liem:1,chinh:2,health:0}, icon: "🤝", event: "Bạn mở rộng mạng lưới. Cơ hội mới mở ra từ mối quan hệ này." }
+  { text: "Bạn được thăng chức lên vị trí Team Lead, vị trí mà một đồng nghiệp khác cũng kỳ vọng:", image: "🎖️", choices: [
+    { text: "Nỗ lực làm tốt, trò chuyện thẳng thắn để phối hợp", effects: {can:3,kiem:1,liem:1,chinh:2,health:-1}, icon: "💪", event: "Bạn chứng minh được năng lực, đồng nghiệp tôn trọng và ủng hộ." },
+    { text: "Bày tỏ sự tự mãn và xa lánh đồng nghiệp đó", effects: {can:-2,kiem:0,liem:-1,chinh:-2,health:0}, icon: "😤", event: "Team chia rẽ, hiệu suất làm việc giảm. Sếp nghi ngờ năng lực lead của bạn." },
+    { text: "Làm việc cầm chừng, lo sợ bị phá hoại", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:0}, icon: "😒", event: "Sự thiếu quyết đoán làm chậm tiến độ dự án." },
+    { text: "Học hỏi và tôn trọng kinh nghiệm của đồng nghiệp đó", effects: {can:2,kiem:1,liem:1,chinh:2,health:0}, icon: "🤝", event: "Bạn xây dựng được mối liên kết vững chắc, team phối hợp tốt." }
   ]},
-  { text: "Team bạn cần xây dựng feature mới nhưng deadline rất chặt:", image: "⏰", choices: [
-    { text: "Làm tối giản, chỉ cần chạy được tính năng core", effects: {can:3,kiem:2,liem:0,chinh:-1,health:-1}, icon: "🏃", event: "Deadline đạt nhưng code hơi rough. Phải refactor sau." },
-    { text: "Kêu lên rằng deadline không thực tế, đề xuất kéo dài", effects: {can:0,kiem:0,liem:1,chinh:1,health:0}, icon: "📞", event: "Sếp đánh giá cao thực tế nhưng client không vui." },
-    { text: "Đề xuất MVP - phát hành feature cơ bản trước, cải thiện sau", effects: {can:2,kiem:2,liem:1,chinh:2,health:0}, icon: "✅", event: "Giải pháp cân bằng. Client hài lòng, team không quá áp lực." },
-    { text: "Làm việc 24/7, bỏ qua chất lượng code hoàn toàn", effects: {can:2,kiem:-1,liem:0,chinh:-1,health:-3}, icon: "😫", event: "Deadline đạt nhưng code là thảm họa. Bạn đau bệnh." }
+  { text: "Team của bạn cần xây dựng tính năng mới nhưng thời gian rất gấp:", image: "⏰", choices: [
+    { text: "Làm tối giản, bỏ qua kiểm thử để kịp bàn giao", effects: {can:3,kiem:2,liem:0,chinh:-1,health:-1}, icon: "🏃", event: "Kịp bàn giao nhưng phát sinh nhiều bug sau đó. Team vất vả fix." },
+    { text: "Phàn nàn gay gắt về deadline, xin lùi liên tục", effects: {can:0,kiem:0,liem:1,chinh:1,health:0}, icon: "📞", event: "Khách hàng không hài lòng vì dự án bị chậm trễ." },
+    { text: "Đề xuất MVP - hoàn thành tính năng cốt lõi chất lượng trước", effects: {can:2,kiem:2,liem:1,chinh:2,health:0}, icon: "✅", event: "Giải pháp hợp lý. Khách hàng đồng ý, hệ thống chạy trơn tru." },
+    { text: "Làm ngày làm đêm bất chấp sức khỏe của cả team", effects: {can:2,kiem:-1,liem:0,chinh:-1,health:-3}, icon: "😫", event: "Deadline đạt được nhưng 2 người trong team xin nghỉ ốm." }
   ]},
-  { text: "Công ty muốn cắt giảm ngân sách, áp lực giảm lương:", image: "💸", choices: [
-    { text: "Chấp nhận ngay, sợ mất việc", effects: {can:0,kiem:1,liem:0,chinh:-1,health:-1}, icon: "😟", event: "Bạn giữ được công việc nhưng mất động lực. Năng suất giảm." },
-    { text: "Thương lượng dựa trên kỹ năng và đóng góp của bạn", effects: {can:1,kiem:1,liem:1,chinh:2,health:0}, icon: "💼", event: "Sếp tôn trọng lập trường. Lương giảm nhẹ hơn hoặc giữ nguyên." },
-    { text: "Từ chối cứng, đe dọa xin việc nếu cắt lương", effects: {can:0,kiem:0,liem:-1,chinh:0,health:1}, icon: "⚡", event: "Sếp tức giận. Bạn giữ lương nhưng tương lai tại công ty bấp bênh." },
-    { text: "Tìm công việc khác trước, rồi quyết định có nên ở lại", effects: {can:2,kiem:2,liem:1,chinh:1,health:0}, icon: "🔍", event: "Bạn có lựa chọn. Có thể ở lại hoặc đi với điều kiện tốt hơn." }
+  { text: "Công ty gặp khó khăn và đề xuất tạm thời cắt giảm lương:", image: "💸", choices: [
+    { text: "Đồng ý ngay mà không đòi hỏi thêm", effects: {can:0,kiem:1,liem:0,chinh:-1,health:-1}, icon: "😟", event: "Bạn thể hiện sự chia sẻ với công ty nhưng tâm lý có phần chán nản." },
+    { text: "Thương lượng điều kiện hybrid hoặc ngày phép bù lại", effects: {can:1,kiem:1,liem:1,chinh:2,health:0}, icon: "💼", event: "Sếp vui vẻ đồng ý. Quyền lợi được bù đắp xứng đáng." },
+    { text: "Từ chối và lập tức làm việc kém năng suất để phản kháng", effects: {can:-2,kiem:0,liem:-1,chinh:-2,health:0}, icon: "⚡", event: "Công ty sớm cho bạn nghỉ việc trong đợt thanh lọc kế tiếp." },
+    { text: "Chia sẻ khó khăn với sếp nhưng chuẩn bị kế hoạch dự phòng", effects: {can:2,kiem:2,liem:1,chinh:1,health:0}, icon: "🔍", event: "Bạn xử lý chủ động, giúp công ty qua cơn hoạn nạn mà vẫn an toàn." }
   ]},
-  { text: "Bạn phát hiện lỗ hổng bảo mật trong hệ thống quản lý nhân sự:", image: "🔓", choices: [
-    { text: "Báo cáo ngay cho IT team và quản lý", effects: {can:1,kiem:0,liem:3,chinh:3,health:0}, icon: "🚨", event: "Lỗ hổng được fix nhanh. Công ty tránh được rủi ro lớn." },
-    { text: "Khai thác lỗ hổng để xem lương của sếp", effects: {can:-3,kiem:-1,liem:-3,chinh:-3,health:0}, icon: "🚫", event: "Bạn bị bắt. Không chỉ mất việc mà còn có vấn đề pháp lý." },
-    { text: "Báo cáo lỗ hổng nhưng cũng đề xuất bạn được thưởng", effects: {can:0,kiem:1,liem:2,chinh:1,health:0}, icon: "💡", event: "Công ty sửa lỗi. Bạn được cảm ơn và có thêm bonus." },
-    { text: "Bỏ qua vì sợ bị nghi ngờ là bạn tạo ra lỗi", effects: {can:-2,kiem:0,liem:-1,chinh:-2,health:0}, icon: "😰", event: "Lỗ hổng bị hacker phát hiện trước. Công ty mất dữ liệu nhân viên." }
+  { text: "Bạn phát hiện lỗ hổng bảo mật rò rỉ dữ liệu trong hệ thống nhân sự:", image: "🔓", choices: [
+    { text: "Báo cáo ngay cho đội bảo mật và quản lý dự án", effects: {can:1,kiem:0,liem:3,chinh:3,health:0}, icon: "🚨", event: "Lỗi bảo mật được vá khẩn cấp. Công ty tránh được thiệt hại hàng tỷ đồng." },
+    { text: "Dùng lỗ hổng này để xem thử bảng lương của toàn công ty", effects: {can:-3,kiem:-1,liem:-3,chinh:-3,health:0}, icon: "🚫", event: "Hành động truy cập trái phép bị ghi lại log. Bạn bị sa thải ngay lập tức." },
+    { text: "Báo cáo lỗi và đồng thời đề xuất cải tiến hệ thống", effects: {can:2,kiem:1,liem:3,chinh:2,health:0}, icon: "💡", event: "Bạn được khen thưởng xuất sắc và giao trọng trách quản lý bảo mật." },
+    { text: "Bỏ qua lỗi vì không phải phần việc được phân công của mình", effects: {can:-2,kiem:0,liem:-1,chinh:-2,health:0}, icon: "😰", event: "Hệ thống bị hacker tấn công tuần sau đó. Công ty tổn thất nặng." }
   ]},
-  { text: "Bạn được mời vào một dự án bí mật, được tăng lương cao:", image: "🕵️", choices: [
-    { text: "Hỏi kỹ về dự án, chắc chắn là công việc hợp pháp", effects: {can:1,kiem:1,liem:2,chinh:3,health:0}, icon: "❓", event: "Dự án hoàn toàn bình thường. Bạn làm với yên tâm." },
-    { text: "Nhận ngay vì lương cao, không cần hỏi nhiều", effects: {can:2,kiem:-1,liem:-1,chinh:-2,health:0}, icon: "💰", event: "Dự án là lợi nhuận bất chính. Bạn bị kéo vào vấn đề pháp lý." },
-    { text: "Từ chối, nghi ngờ có điều gì đó không ổn", effects: {can:0,kiem:0,liem:2,chinh:2,health:1}, icon: "🛑", event: "Dự án thực sự liên quan đến vấn đề pháp lý. Bạn thoát được." },
-    { text: "Nhận nhưng chuẩn bị kế hoạch thoát ra nếu có vấn đề", effects: {can:1,kiem:2,liem:1,chinh:0,health:0}, icon: "⚠️", event: "Bạn kiếm tiền nhưng luôn cảnh báo. Rất mệt mỏi." }
+  { text: "Bạn được một đối tác đề xuất làm dự án riêng có thù lao cao ngất ngưởng:", image: "🕵️", choices: [
+    { text: "Kiểm tra kỹ tính pháp lý và xung đột lợi ích rồi mới nhận", effects: {can:1,kiem:1,liem:2,chinh:3,health:0}, icon: "❓", event: "Dự án sạch sẽ, bạn hoàn thành tốt và có thêm thu nhập chân chính." },
+    { text: "Nhận ngay lập tức, bỏ bê công việc chính tại công ty", effects: {can:-1,kiem:-2,liem:-2,chinh:-3,health:-1}, icon: "💰", event: "Bạn bị đuổi việc ở công ty cũ vì hiệu suất sụt giảm nghiêm trọng." },
+    { text: "Từ chối thẳng thừng vì thấy có dấu hiệu vi phạm bảo mật", effects: {can:0,kiem:0,liem:2,chinh:2,health:1}, icon: "🛑", event: "Quyết định sáng suốt! Dự án đó sau này bị điều tra vì vi phạm pháp luật." },
+    { text: "Nhận làm ngoài giờ nhưng luôn trong trạng thái lo lắng", effects: {can:2,kiem:1,liem:1,chinh:0,health:-1}, icon: "⚠️", event: "Kiếm thêm được tiền nhưng sức khỏe tinh thần sụt giảm trầm trọng." }
   ]},
-  { text: "Sếp bạn phát hành sản phẩm không qua kiểm thử đầy đủ:", image: "🚀", choices: [
-    { text: "Phản đối mạnh mẽ, viết báo cáo tài liệu rủi ro", effects: {can:0,kiem:0,liem:2,chinh:3,health:0}, icon: "⚠️", event: "Sếp bực nhưng ghi nhận ý kiến. Sản phẩm được kiểm tra thêm." },
-    { text: "Tuân theo lệnh, sản phẩm phát hành và có lỗi lớn", effects: {can:1,kiem:0,liem:-1,chinh:-1,health:0}, icon: "💥", event: "Sản phẩm gặp sự cố. Bạn cũng bị liên đới trong lỗi." },
-    { text: "Đề xuất phát hành beta version trước, lấy feedback", effects: {can:2,kiem:1,liem:1,chinh:2,health:0}, icon: "💡", event: "Giải pháp cân bằng. Sếp đồng ý. Giảm rủi ro." },
-    { text: "Yêu cầu ghi âm cuộc họp để có bằng chứng nếu có vấn đề", effects: {can:-1,kiem:0,liem:0,chinh:-1,health:0}, icon: "📱", event: "Sếp tức giận vì cảm thấy bị nghi ngờ. Quan hệ xấu đi." }
+  { text: "Sếp muốn đẩy nhanh tiến độ và yêu cầu phát hành bản beta chưa test kỹ:", image: "🚀", choices: [
+    { text: "Phản đối thẳng thắn, đưa ra danh sách rủi ro nghiêm trọng", effects: {can:0,kiem:0,liem:2,chinh:3,health:0}, icon: "⚠️", event: "Sếp bình tĩnh lại và đồng ý cho thêm 3 ngày kiểm thử." },
+    { text: "Tuân lệnh im lặng, sản phẩm phát hành và gặp crash liên tục", effects: {can:1,kiem:0,liem:-1,chinh:-1,health:-1}, icon: "💥", event: "Khách hàng phẫn nộ, cả nhóm phải làm việc cuối tuần để sửa sai." },
+    { text: "Đề xuất phát hành giới hạn (Canary) để giảm thiểu rủi ro", effects: {can:2,kiem:1,liem:1,chinh:2,health:0}, icon: "💡", event: "Giải pháp thông minh, sếp đồng ý. Nhận feedback tốt từ lượng user nhỏ." },
+    { text: "Bắt mọi người ký cam kết sếp chịu mọi trách nhiệm trước khi release", effects: {can:-1,kiem:0,liem:0,chinh:-1,health:0}, icon: "📱", event: "Hành vi tự vệ quá đà làm tổn thương mối quan hệ làm việc với sếp." }
   ]},
-  { text: "Một khách hàng cũ liên hệ bạn, muốn hợp tác bên ngoài:", image: "📧", choices: [
-    { text: "Hỏi công ty trước, xin phép rồi nhận việc", effects: {can:1,kiem:1,liem:2,chinh:3,health:0}, icon: "✅", event: "Công ty đồng ý. Bạn làm freelance hợp pháp, lương chính không giảm." },
-    { text: "Nhận luôn, làm ngoài giờ không báo công ty", effects: {can:2,kiem:-1,liem:-2,chinh:-2,health:-1}, icon: "😬", event: "Bạn kiếm thêm nhưng rủi ro cao. Nếu phát hiện sẽ bị sa thải." },
-    { text: "Từ chối, vì đã ký hợp đồng cam kết với công ty", effects: {can:0,kiem:0,liem:2,chinh:2,health:0}, icon: "🤝", event: "Khách hàng tìm người khác. Bạn giữ được uy tín." },
-    { text: "Dò hỏi đại khái, không hỏi rõ ràng về chính sách công ty", effects: {can:0,kiem:-1,liem:-1,chinh:-1,health:0}, icon: "🤐", event: "Bạn rơi vào khu vực xám. Rủi ro cao." }
+  { text: "Một khách hàng cũ liên hệ trực tiếp muốn thuê bạn bảo trì dự án riêng:", image: "📧", choices: [
+    { text: "Xin phép công ty quản lý rõ ràng trước khi nhận", effects: {can:1,kiem:1,liem:2,chinh:3,health:0}, icon: "✅", event: "Công ty đồng ý và hỗ trợ thủ tục. Bạn làm việc quang minh chính đại." },
+    { text: "Nhận làm bí mật trong giờ làm việc tại công ty", effects: {can:2,kiem:-1,liem:-3,chinh:-3,health:-2}, icon: "😬", event: "Bị phát hiện qua kiểm tra màn hình ngẫu nhiên. Nhận án kỷ luật sa thải." },
+    { text: "Từ chối vì hợp đồng lao động không cho phép làm việc ngoài", effects: {can:0,kiem:0,liem:2,chinh:2,health:0}, icon: "🤝", event: "Khách hàng cũ tôn trọng tính chuyên nghiệp của bạn." },
+    { text: "Giới thiệu cho một người bạn đang thất nghiệp và không lấy hoa hồng", effects: {can:1,kiem:2,liem:2,chinh:2,health:0}, icon: "🙌", event: "Hành động đẹp! Bạn vừa giúp được bạn bè vừa giữ được quan hệ tốt." }
   ]},
-  { text: "Bạn là lập trình viên duy nhất biết hệ thống cũ:", image: "🔑", choices: [
-    { text: "Ghi chép tài liệu kỹ, dạy cho đồng nghiệp khác", effects: {can:3,kiem:0,liem:2,chinh:2,health:-1}, icon: "📚", event: "Công ty không phụ thuộc vào một người. Bạn được coi là lãnh đạo." },
-    { text: "Giữ kín kiến thức, tạo sự phụ thuộc vào bạn", effects: {can:0,kiem:-1,liem:-2,chinh:-2,health:0}, icon: "🔒", event: "Bạn có quyền lực tạm thời nhưng bị cô lập. Không ai muốn làm với bạn." },
-    { text: "Chuẩn bị để migrate hệ thống sang công nghệ mới", effects: {can:3,kiem:1,liem:1,chinh:1,health:-1}, icon: "🚀", event: "Mất công nhưng hệ thống cập nhật. Công ty không phụ thuộc bạn." },
-    { text: "Làm tài liệu nhưng không đủ sâu, ai cũng phải hỏi bạn", effects: {can:1,kiem:0,liem:0,chinh:0,health:0}, icon: "📖", event: "Bạn vẫn trung tâm nhưng ít rắc rối hơn so với giữ kín." }
+  { text: "Bạn là người duy nhất nắm rõ source code của một hệ thống cốt lõi cũ:", image: "🔑", choices: [
+    { text: "Chủ động viết document chi tiết và tổ chức training cho team", effects: {can:3,kiem:0,liem:2,chinh:2,health:-1}, icon: "📚", event: "Cả team nắm được hệ thống. Bạn được sếp đề cử làm Tech Lead." },
+    { text: "Giấu thông tin, viết document khó hiểu để giữ vị thế độc tôn", effects: {can:0,kiem:-1,liem:-2,chinh:-2,health:0}, icon: "🔒", event: "Mọi người xa lánh bạn. Khi bạn xin tăng lương quá đáng, công ty sẵn sàng cho bạn nghỉ." },
+    { text: "Lên kế hoạch tái cấu trúc (refactor) để cả team cùng tham gia", effects: {can:3,kiem:1,liem:1,chinh:1,health:0}, icon: "🚀", event: "Hệ thống được làm mới sạch sẽ, năng suất cả team tăng vọt." },
+    { text: "Chỉ chia sẻ thông tin khi sếp yêu cầu trực tiếp", effects: {can:1,kiem:0,liem:0,chinh:0,health:0}, icon: "📖", event: "Bạn xử lý thụ động, gây tốn thời gian cho các dự án liên quan." }
   ]},
-  { text: "Công ty muốn bạn làm việc tại văn phòng sau COVID:", image: "🏢", choices: [
-    { text: "Chấp nhận mà không thương lượng gì cả", effects: {can:1,kiem:0,liem:0,chinh:-1,health:-1}, icon: "😔", event: "Bạn mất linh hoạt nhưng công ty hài lòng. Năng suất giảm." },
-    { text: "Thương lượng làm hybrid: 2 ngày văn phòng, 3 ngày home", effects: {can:1,kiem:1,liem:1,chinh:2,health:1}, icon: "💼", event: "Công ty đồng ý. Bạn có cân bằng công việc-cuộc sống tốt hơn." },
-    { text: "Từ chối hoàn toàn, đe dọa tìm công ty khác", effects: {can:0,kiem:0,liem:-1,chinh:0,health:1}, icon: "✊", event: "Công ty tức giận nhưng có thể nhân nhượng. Cơ hội tuyệt vô." },
-    { text: "Im lặng chấp nhận nhưng bắt đầu tìm công ty khác", effects: {can:0,kiem:2,liem:0,chinh:0,health:0}, icon: "🔍", event: "Bạn giữ được sức khỏe tâm thần nhưng luôn bước đi cây cối." }
+  { text: "Sau dịch bệnh, công ty yêu cầu toàn bộ nhân viên quay lại văn phòng làm việc:", image: "🏢", choices: [
+    { text: "Chấp hành vui vẻ, thích nghi nhanh với môi trường", effects: {can:1,kiem:0,liem:0,chinh:1,health:0}, icon: "🚶", event: "Bạn bắt nhịp lại nhanh chóng, tương tác trực tiếp hiệu quả với team." },
+    { text: "Thương lượng đề xuất chính sách Hybrid (3 ngày office, 2 ngày remote)", effects: {can:1,kiem:1,liem:1,chinh:2,health:1}, icon: "💼", event: "Đề xuất được chấp thuận cho cả phòng. Ai cũng biết ơn bạn." },
+    { text: "Tỏ thái độ tiêu cực, đi trễ về sớm để phản đối", effects: {can:-2,kiem:0,liem:0,chinh:-1,health:0}, icon: "😡", event: "Bạn bị đánh giá thấp về thái độ chuyên nghiệp trong đợt review." },
+    { text: "Xin làm remote 100% kèm theo cam kết KPIs cao hơn", effects: {can:2,kiem:2,liem:1,chinh:1,health:0}, icon: "📈", event: "Sếp đồng ý thử nghiệm. Bạn phải nỗ lực rất nhiều để giữ cam kết." }
   ]},
-  { text: "Bạn viết code trong một project nhưng bị chỉ trích nặng nề:", image: "😤", choices: [
-    { text: "Lắng nghe và hỏi để hiểu rõ vấn đề cần cải thiện", effects: {can:1,kiem:0,liem:1,chinh:2,health:0}, icon: "👂", event: "Bạn cải thiện code. Mọi người tôn trọng tinh thần học hỏi của bạn." },
-    { text: "Phòng vệ, giải thích vì sao code như vậy", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:0}, icon: "🛡️", event: "Cuộc tranh luận trở nên xấu xí. Quan hệ team xấu đi." },
-    { text: "Bỏ cuộc, nói rằng bạn là lập trình viên tệ hại", effects: {can:-2,kiem:0,liem:0,chinh:-1,health:-1}, icon: "😢", event: "Bạn mất tự tin. Công việc tiếp theo còn tệ hơn." },
-    { text: "Cảm ơn feedback, hỏi xem có thể cải thiện cùng đồng nghiệp", effects: {can:2,kiem:1,liem:2,chinh:2,health:0}, icon: "🤝", event: "Bạn học được gì. Người chỉ trích trở thành mentor. Code tốt hơn." }
+  { text: "Code của bạn viết bị một đồng nghiệp khác chỉ ra nhiều lỗi nghiêm trọng:", image: "😤", choices: [
+    { text: "Chú ý lắng nghe, cùng phân tích để sửa và học hỏi", effects: {can:1,kiem:0,liem:1,chinh:2,health:0}, icon: "👂", event: "Lỗi được fix, bạn tích lũy thêm kinh nghiệm quý báu." },
+    { text: "Phản ứng gay gắt, cho rằng đồng nghiệp cố ý dìm hàng mình", effects: {can:-1,kiem:0,liem:-1,chinh:-1,health:0}, icon: "🛡️", event: "Mối quan hệ đồng nghiệp rạn nứt sâu sắc. Không ai muốn làm việc cùng bạn." },
+    { text: "Nhận feedback, âm thầm tự ti cho rằng mình không hợp ngành IT", effects: {can:-2,kiem:0,liem:0,chinh:-1,health:-1}, icon: "😢", event: "Tinh thần suy sụp, hiệu suất công việc giảm sút trầm trọng." },
+    { text: "Cảm ơn chân thành và đề xuất buổi Pair Programming để học hỏi sâu", effects: {can:2,kiem:1,liem:2,chinh:2,health:0}, icon: "🤝", event: "Đồng nghiệp trở thành mentor đắc lực của bạn. Code của bạn sạch đẹp hẳn." }
   ]}
 ];
 
 // Mảng câu hỏi được chọn ngẫu nhiên cho mỗi ván game (10 câu từ pool)
 let gameScenarios = [];
-
 let stats = { can: 5, kiem: 5, liem: 5, chinh: 5, health: 10 };
 let history = [];
+let selectedChoices = [];
 let currentRound = 0;
+
+// Danh sách thành tựu có thể đạt được
+const achievements = [
+  {
+    id: "mentor",
+    title: "Người Mentor Tận Tâm",
+    desc: "Dành thời gian quý báu hướng dẫn Junior hoặc đề xuất Pair Programming học hỏi lẫn nhau.",
+    icon: "🤝",
+    condition: (choices) => choices.some(c => c.choiceText.includes("mentor") || c.choiceText.includes("Pair programming") || c.choiceText.includes("Pair Programming"))
+  },
+  {
+    id: "opensource",
+    title: "Hiệp Sĩ Mã Nguồn Mở",
+    desc: "Tìm kiếm các giải pháp open-source sạch để tiết kiệm ngân sách cho công ty một cách hợp pháp.",
+    icon: "✨",
+    condition: (choices) => choices.some(c => c.choiceText.includes("open-source") || c.choiceText.includes("mã nguồn mở"))
+  },
+  {
+    id: "bug_hunter",
+    title: "Khắc Tinh Của Bug",
+    desc: "Trung thực báo cáo bug trên production ngay lập tức hoặc đầu tư viết test case kỹ lưỡng.",
+    icon: "🐛",
+    condition: (choices) => choices.some(c => c.choiceText.includes("Báo ngay lập tức") || c.choiceText.includes("Viết test case kỹ"))
+  },
+  {
+    id: "security_hero",
+    title: "Hiệp Sĩ Bảo Mật",
+    desc: "Kịp thời báo cáo lỗ hổng rò rỉ dữ liệu nghiêm trọng và đề xuất giải pháp vá lỗi.",
+    icon: "🛡️",
+    condition: (choices) => choices.some(c => c.choiceText.includes("Báo cáo ngay cho đội bảo mật") || c.choiceText.includes("Báo cáo lỗ hổng"))
+  },
+  {
+    id: "privacy_defender",
+    title: "Hộ Vệ Quyền Riêng Tư",
+    desc: "Kiên quyết bảo vệ thông tin người dùng bằng giải pháp thay thế tôn trọng privacy.",
+    icon: "🔐",
+    condition: (choices) => choices.some(c => c.choiceText.includes("giải thích rõ lý do đạo đức") || c.choiceText.includes("tôn trọng privacy"))
+  },
+  {
+    id: "knowledge_sharer",
+    title: "Người Chia Sẻ Tri Thức",
+    desc: "Viết tài liệu hệ thống (document) chi tiết giúp tập thể gỡ bỏ sự phụ thuộc độc quyền.",
+    icon: "📚",
+    condition: (choices) => choices.some(c => c.choiceText.includes("viết tài liệu ngắn gọn") || c.choiceText.includes("viết document chi tiết") || c.choiceText.includes("viết tài liệu chi tiết"))
+  },
+  {
+    id: "diplomat",
+    title: "Chuyên Gia Thương Lượng",
+    desc: "Đề xuất thành công cơ chế Hybrid hoặc thương lượng quyền lợi cống hiến thực chất.",
+    icon: "💼",
+    condition: (choices) => choices.some(c => c.choiceText.includes("Thương lượng làm hybrid") || c.choiceText.includes("Thương lượng đề xuất chính sách Hybrid") || c.choiceText.includes("Thương lượng dựa trên kỹ năng"))
+  },
+  {
+    id: "courageous",
+    title: "Dũng Cảm Nhận Lỗi",
+    desc: "Đứng ra nhận trách nhiệm cá nhân và đúc rút bài học khi dự án lớn thất bại.",
+    icon: "💪",
+    condition: (choices) => choices.some(c => c.choiceText.includes("Nhận trách nhiệm"))
+  }
+];
+
+const moralProfiles = {
+  can: {
+    name: "Cần (Siêng năng)",
+    icon: "🔥",
+    color: "yellow",
+    levels: {
+      high: {
+        status: "Xuất Sắc",
+        quote: "Cần tức là siêng năng, chăm chỉ, cố gắng dẻo dai. Người siêng năng thì mau tiến bộ. Cả đời chỉ lo làm việc cho dân, cho nước.",
+        citation: "— Tác phẩm 'Cần Kiệm Liêm Chính' (1949)",
+        advice: "Chúc mừng bạn! Điểm số 'Cần' cao cho thấy bạn có tinh thần tự học vượt trội, không quản ngại làm việc khó, sẵn sàng hỗ trợ chỉ bảo đồng nghiệp mới. Đây là phẩm chất nền tảng giúp bạn nhanh chóng làm chủ công nghệ mới trong ngành CNTT."
+      },
+      medium: {
+        status: "Khá",
+        quote: "Cần không phải là làm xộc xộc, làm đầu tắt mặt tối... Phải làm việc có kế hoạch, có sự phân công rõ ràng.",
+        citation: "— Tác phẩm 'Cần Kiệm Liêm Chính' (1949)",
+        advice: "Bạn siêng năng làm việc nhưng đôi khi cách làm còn thiếu khoa học, chưa có kế hoạch cụ thể, dẫn đến hiệu suất chưa tối ưu. Hãy học cách phân phối thời gian, sắp xếp thứ tự ưu tiên và chủ động tự học sâu hơn."
+      },
+      low: {
+        status: "Cần Cải Thiện",
+        quote: "Lười biếng là kẻ thù của nghệ thuật, của học tập, của mọi tiến bộ. Người siêng học thì mau biết, người lười học thì dốt nát.",
+        citation: "— Trích bài nói chuyện tại Lớp Huấn luyện Cán bộ (1949)",
+        advice: "Chỉ số 'Cần' thấp cảnh báo bạn đang lười học công nghệ mới, thụ động trong công việc hoặc dễ nản chí trước các lỗi (bug) phức tạp. CNTT thay đổi từng ngày; nếu dừng siêng năng tự học, bạn sẽ rất nhanh bị đào thải."
+      }
+    }
+  },
+  kiem: {
+    name: "Kiệm (Tiết kiệm)",
+    icon: "💎",
+    color: "green",
+    levels: {
+      high: {
+        status: "Xuất Sắc",
+        quote: "Kiệm là tiết kiệm, không hoang phí thời giờ, không hoang phí của công, của tư. 'Thời giờ cũng là tiền bạc'.",
+        citation: "— Tác phẩm 'Cần Kiệm Liêm Chính' (1949)",
+        advice: "Xuất sắc! Bạn có ý thức tối ưu hóa mã nguồn rất tốt, tiết kiệm chi phí mua công cụ nhờ ưu tiên giải pháp open-source và quản lý thời gian hiệu quả. Tư duy tối ưu (lean) này giúp dự án vận hành với chi phí tối thiểu."
+      },
+      medium: {
+        status: "Khá",
+        quote: "Kiệm mà không Cần thì không tăng gia sản xuất được. Có Cần mà không Kiệm thì cũng như một cái thùng không đáy.",
+        citation: "— Trích bài nói chuyện tại Lớp Huấn luyện Cán bộ (1949)",
+        advice: "Bạn có ý thức tiết kiệm nhưng giải pháp của bạn chưa tối ưu triệt để. Code có thể còn cồng kềnh hoặc quy trình triển khai còn tốn công. Hãy tập trung cải tiến hiệu năng thuật toán và tái sử dụng mã nguồn có sẵn."
+      },
+      low: {
+        status: "Cần Cải Thiện",
+        quote: "Hoang phí thời giờ là một tội lỗi. Một giờ bỏ phí là một giờ không làm ra gì, tự hại mình và hại tập thể.",
+        citation: "— Bài viết trên báo Cứu Quốc (1949)",
+        advice: "Chỉ số 'Kiệm' thấp phản ánh bạn đang lãng phí tài nguyên của công ty (chọn tool đắt đỏ không cần thiết, viết code tốn kém RAM/CPU, hoặc trễ nải deadline). Hãy học cách tối giản quy trình và xem trọng hiệu năng hệ thống."
+      }
+    }
+  },
+  liem: {
+    name: "Liêm (Trong sạch)",
+    icon: "🛡️",
+    color: "blue",
+    levels: {
+      high: {
+        status: "Xuất Sắc",
+        quote: "Liêm tức là trong sạch, không tham lam. Chữ Liêm phải đi đôi với chữ Kiệm... Có Kiệm mới giữ được Liêm, không tham phú quý.",
+        citation: "— Tác phẩm 'Cần Kiệm Liêm Chính' (1949)",
+        advice: "Đạo đức nghề nghiệp của bạn thật đáng quý! Bạn tuân thủ tuyệt đối bản quyền phần mềm, bảo vệ dữ liệu người dùng và minh bạch trong mọi việc. Đây là chìa khóa vàng giúp bạn xây dựng uy tín lâu bền trong ngành."
+      },
+      medium: {
+        status: "Khá",
+        quote: "Chữ Liêm là gốc của đạo đức. Người làm cán bộ, người làm chuyên môn mà không Liêm thì khó lòng làm việc tốt.",
+        citation: "— Soạn thảo 'Sửa đổi lối làm việc' (1947)",
+        advice: "Bạn giữ được sự trong sạch cơ bản nhưng đôi khi còn đứng trước những lựa chọn mập mờ có tính rủi ro pháp lý cao (ví dụ: vùng xám bản quyền). Hãy cẩn trọng hơn và luôn đặt tính tuân thủ làm tôn chỉ hoạt động."
+      },
+      low: {
+        status: "Cần Cải Thiện",
+        quote: "Một người không Liêm thì việc gì cũng có thể làm xấu. Tham lam một chút lợi nhỏ mà làm hại cả tập thể.",
+        citation: "— Trích tác phẩm 'Cần Kiệm Liêm Chính' (1949)",
+        advice: "Điểm số 'Liêm' ở mức đáng báo động. Việc sao chép code vi phạm bản quyền, trục lợi cá nhân hay nhận việc ngoài trong giờ hành chính của công ty sẽ tàn phá sự nghiệp của bạn. Hãy nghiêm túc tuân thủ đạo đức."
+      }
+    }
+  },
+  chinh: {
+    name: "Chính (Ngay thẳng)",
+    icon: "⚖️",
+    color: "purple",
+    levels: {
+      high: {
+        status: "Xuất Sắc",
+        quote: "Chính nghĩa là đứng đắn, thẳng thắn. Việc thiện dù nhỏ mấy cũng làm, việc ác dù nhỏ mấy cũng tránh. Không nịnh trên khinh dưới.",
+        citation: "— Bài viết trên báo Cứu Quốc (1949)",
+        advice: "Bạn là người chính trực và đáng tin cậy. Bạn luôn thẳng thắn nhận trách nhiệm khi làm hỏng dự án, dũng cảm phản biện ý kiến sai lệch và báo cáo thành tích chân thực. Sự ngay thẳng này giúp bạn có lòng tin của toàn team."
+      },
+      medium: {
+        status: "Khá",
+        quote: "Người chính trực thì tự mình phải đứng đắn trước, rồi mới nói người khác đứng đắn được. Phải luôn tự soi xét mình.",
+        citation: "— Soạn thảo 'Sửa đổi lối làm việc' (10/1947)",
+        advice: "Bạn trung thực nhưng đôi lúc còn chọn cách im lặng, tránh né va chạm thay vì dũng cảm phản biện xây dựng. Hãy tự tin bày tỏ chính kiến một cách văn minh vì mục tiêu chung của sản phẩm."
+      },
+      low: {
+        status: "Cần Cải Thiện",
+        quote: "Tự lừa dối mình và lừa dối người khác là hành vi hèn nhát nhất. Trốn tránh khuyết điểm chỉ làm khuyết điểm đó to ra.",
+        citation: "— Soạn thảo 'Sửa đổi lối làm việc' (10/1947)",
+        advice: "Chỉ số 'Chính' thấp cho thấy bạn có xu hướng đổ lỗi cho ngoại cảnh khi code có bug, trốn tránh sửa sai hoặc phóng đại thành tích cá nhân. Hãy nhớ rằng dũng cảm đối mặt thất bại mới là chìa khóa trưởng thành."
+      }
+    }
+  }
+};
 
 function shuffleArray(arr) {
   const a = [...arr];
@@ -353,12 +705,19 @@ function shuffleArray(arr) {
 function startGame() {
   stats = { can: 5, kiem: 5, liem: 5, chinh: 5, health: 10 };
   history = [{ ...stats }];
+  selectedChoices = [];
   currentRound = 0;
-  // Shuffle toàn bộ pool và chọn 10 câu không trùng lặp
+  
+  // Xáo trộn và lấy 10 câu hỏi ngẫu nhiên
   gameScenarios = shuffleArray(scenarios).slice(0, 10);
+  
   document.getElementById('screen-start').classList.add('hidden');
   document.getElementById('screen-result').classList.add('hidden');
   document.getElementById('screen-game').classList.remove('hidden');
+  
+  // Reset tabs navigation state
+  switchTab('overview');
+  
   showRound();
 }
 
@@ -371,15 +730,29 @@ function showRound() {
   
   const container = document.getElementById('choices-container');
   container.innerHTML = '';
+  
+  // Color configuration for choice cards border glow
+  const borderColors = [
+    'hover:border-yellow-400/50 hover:bg-yellow-500/5 focus:border-yellow-400',
+    'hover:border-green-400/50 hover:bg-green-500/5 focus:border-green-400',
+    'hover:border-blue-400/50 hover:bg-blue-500/5 focus:border-blue-400',
+    'hover:border-purple-400/50 hover:bg-purple-500/5 focus:border-purple-400'
+  ];
+  
+  const labelIcons = ['👉', '⚡', '💡', '🔍'];
+
   s.choices.forEach((c, i) => {
-    const colors = ['from-yellow-500/20 to-yellow-600/10 border-yellow-500/30','from-green-500/20 to-green-600/10 border-green-500/30','from-blue-500/20 to-blue-600/10 border-blue-500/30','from-purple-500/20 to-purple-600/10 border-purple-500/30'];
     const btn = document.createElement('button');
-    btn.className = `card-choice bg-gradient-to-br ${colors[i]} border rounded-xl p-4 text-left hover:border-white/50 fade-in`;
-    btn.style.animationDelay = `${i * 0.1}s`;
-    btn.innerHTML = `<span class="text-sm font-medium">${c.text}</span>`;
+    btn.className = `choice-card w-full rounded-2xl p-4.5 text-left border border-white/5 flex gap-3 items-center transition-all duration-300 fade-in ${borderColors[i]}`;
+    btn.style.animationDelay = `${i * 0.08}s`;
+    btn.innerHTML = `
+      <span class="flex-shrink-0 w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-sm font-medium border border-white/5">${labelIcons[i]}</span>
+      <span class="text-sm md:text-base text-gray-200 font-normal leading-snug">${c.text}</span>
+    `;
     btn.onclick = () => selectChoice(i);
     container.appendChild(btn);
   });
+  
   updateBars();
 }
 
@@ -387,35 +760,69 @@ function selectChoice(idx) {
   const s = gameScenarios[currentRound];
   const choice = s.choices[idx];
   
+  // Cập nhật chỉ số
   stats.can = Math.max(0, Math.min(10, stats.can + choice.effects.can));
   stats.kiem = Math.max(0, Math.min(10, stats.kiem + choice.effects.kiem));
   stats.liem = Math.max(0, Math.min(10, stats.liem + choice.effects.liem));
   stats.chinh = Math.max(0, Math.min(10, stats.chinh + choice.effects.chinh));
   stats.health = Math.max(0, stats.health + choice.effects.health);
   
+  // Lưu lịch sử
   history.push({ ...stats });
+  
+  // Ghi nhận quyết định được chọn để phân tích kết luận cuối cùng
+  selectedChoices.push({
+    scenarioText: s.text,
+    scenarioImage: s.image,
+    choiceText: choice.text,
+    eventText: choice.event,
+    effects: choice.effects,
+    icon: choice.icon
+  });
+  
   updateBars();
 
-  // Check if health reaches 0
+  // Kiểm tra nếu sức khỏe rơi về 0
   if (stats.health <= 0) {
     showGameOverEnding();
     return;
   }
 
+  // Ẩn các nút lựa chọn để hiện kết quả của round này
   document.getElementById('choices-container').innerHTML = '';
+  
   const eventDiv = document.getElementById('event-result');
   eventDiv.classList.remove('hidden');
   document.getElementById('result-image').textContent = choice.icon;
   document.getElementById('event-text').textContent = choice.event;
   
+  // Tạo danh sách badge thay đổi chỉ số sinh động
   const ef = choice.effects;
-  let statsText = [];
-  if(ef.can) statsText.push(`Cần ${ef.can>0?'+':''}${ef.can}`);
-  if(ef.kiem) statsText.push(`Kiệm ${ef.kiem>0?'+':''}${ef.kiem}`);
-  if(ef.liem) statsText.push(`Liêm ${ef.liem>0?'+':''}${ef.liem}`);
-  if(ef.chinh) statsText.push(`Chính ${ef.chinh>0?'+':''}${ef.chinh}`);
-  if(ef.health) statsText.push(`Sức Khỏe ${ef.health>0?'+':''}${ef.health}`);
-  document.getElementById('event-stats').textContent = statsText.join(' | ');
+  const statsContainer = document.getElementById('event-stats');
+  statsContainer.innerHTML = '';
+  
+  const badges = [
+    { val: ef.can, name: 'Cần', icon: '🔥', colorClass: ef.can > 0 ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' : 'bg-red-500/10 text-red-400 border-red-500/20' },
+    { val: ef.kiem, name: 'Kiệm', icon: '💎', colorClass: ef.kiem > 0 ? 'bg-green-500/20 text-green-300 border-green-500/30' : 'bg-red-500/10 text-red-400 border-red-500/20' },
+    { val: ef.liem, name: 'Liêm', icon: '🛡️', colorClass: ef.liem > 0 ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' : 'bg-red-500/10 text-red-400 border-red-500/20' },
+    { val: ef.chinh, name: 'Chính', icon: '⚖️', colorClass: ef.chinh > 0 ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' : 'bg-red-500/10 text-red-400 border-red-500/20' },
+    { val: ef.health, name: 'Sức Khỏe', icon: '❤️', colorClass: ef.health > 0 ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30' }
+  ];
+  
+  let changesExist = false;
+  badges.forEach(b => {
+    if (b.val !== 0) {
+      changesExist = true;
+      const pill = document.createElement('span');
+      pill.className = `text-xs font-semibold px-2.5 py-1 rounded-lg border ${b.colorClass} flex items-center gap-1`;
+      pill.innerHTML = `${b.icon} ${b.name} ${b.val > 0 ? '+' : ''}${b.val}`;
+      statsContainer.appendChild(pill);
+    }
+  });
+  
+  if (!changesExist) {
+    statsContainer.innerHTML = `<span class="text-xs text-gray-400 italic">Không ảnh hưởng các chỉ số</span>`;
+  }
 }
 
 function nextRound() {
@@ -428,33 +835,62 @@ function nextRound() {
 }
 
 function updateBars() {
-  document.getElementById('bar-can').style.width = (stats.can * 10) + '%';
-  document.getElementById('bar-kiem').style.width = (stats.kiem * 10) + '%';
-  document.getElementById('bar-liem').style.width = (stats.liem * 10) + '%';
-  document.getElementById('bar-chinh').style.width = (stats.chinh * 10) + '%';
-  document.getElementById('bar-health').style.width = (stats.health * 10) + '%';
-  document.getElementById('val-can').textContent = stats.can;
-  document.getElementById('val-kiem').textContent = stats.kiem;
-  document.getElementById('val-liem').textContent = stats.liem;
-  document.getElementById('val-chinh').textContent = stats.chinh;
-  document.getElementById('val-health').textContent = stats.health;
+  const virt = ['can', 'kiem', 'liem', 'chinh', 'health'];
+  virt.forEach(v => {
+    const val = stats[v];
+    const percentage = Math.min(100, Math.max(0, val * 10));
+    document.getElementById(`bar-${v}`).style.width = percentage + '%';
+    document.getElementById(`val-${v}`).textContent = val;
+  });
+}
+
+function switchTab(tabId) {
+  const tabs = ['overview', 'moral', 'log'];
+  tabs.forEach(t => {
+    const content = document.getElementById(`tab-content-${t}`);
+    const btn = document.getElementById(`tab-btn-${t}`);
+    
+    if (t === tabId) {
+      content.classList.remove('hidden');
+      btn.className = "flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300 bg-white/10 text-white shadow-md";
+    } else {
+      content.classList.add('hidden');
+      btn.className = "flex-1 py-3 text-sm font-semibold rounded-xl transition-all duration-300 text-gray-400 hover:text-white";
+    }
+  });
 }
 
 function showGameOverEnding() {
   document.getElementById('screen-game').classList.add('hidden');
   document.getElementById('screen-result').classList.remove('hidden');
   
-  document.getElementById('ending-text').textContent = "💔 Sức Khỏe Suy Sụp!";
-  document.getElementById('ending-story').innerHTML = `<p class="text-gray-300 leading-relaxed">Bạn đã quá mệt mỏi và sức khỏe suy sụp. Trong lĩnh vực IT, việc giữ gìn sức khỏe là cực kỳ quan trọng. Bạn cần học cách cân bằng giữa công việc và cuộc sống cá nhân. Bác Hồ cũng dạy: "Phải rèn luyện sức khỏe để có thể lao động sáng tạo lâu dài".</p>`;
-  
-  document.getElementById('final-stats').innerHTML = `
-    <div class="bg-yellow-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-yellow-300">${stats.can}</div><div class="text-xs">Cần</div></div>
-    <div class="bg-green-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-green-300">${stats.kiem}</div><div class="text-xs">Kiệm</div></div>
-    <div class="bg-blue-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-blue-300">${stats.liem}</div><div class="text-xs">Liêm</div></div>
-    <div class="bg-purple-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-purple-300">${stats.chinh}</div><div class="text-xs">Chính</div></div>
-    <div class="bg-red-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-red-300">${stats.health}</div><div class="text-xs">Sức Khỏe (TẠM DỪNG)</div></div>
+  // Set avatar & texts for game over
+  document.getElementById('profile-avatar-container').textContent = "🏥";
+  document.getElementById('ending-text').textContent = "Chiến Sĩ Kiệt Sức (Sức Khỏe Suy Sụp)";
+  document.getElementById('ending-story').innerHTML = `
+    Bạn đã quá tập trung hoặc ôm đồm công việc đến mức bỏ bê thể trạng bản thân. Sức khỏe cạn kiệt khiến hành trình lập trình của bạn buộc phải tạm dừng. 
+    <br><br>
+    Bác Hồ đã dạy: <i>"Giữ gìn dân chủ, xây dựng nước nhà... tất cả đều phụ thuộc vào sức khỏe của người dân"</i>. Hãy nhớ rằng, việc học cách cân bằng cuộc sống, sắp xếp thời gian làm việc khoa học và bảo vệ sức khỏe là một phần không thể thiếu của người làm IT bền chí.
   `;
   
+  // Render stats boxes
+  renderFinalStatsGrid();
+  
+  // Render Ho Chi Minh quote box on Tab 2 specifically for health
+  document.getElementById('ho-quote').innerHTML = `
+    "Dân cường thì nước thịnh. Tôi mong đồng bào ai cũng gắng tập thể dục. Tự tôi ngày nào cũng tập."
+    <br><span class="block text-right text-xs mt-1 text-amber-500 font-semibold">— Trích 'Sức khỏe và Thể dục' (3/1946)</span>
+  `;
+  document.getElementById('ho-reflection').textContent = `
+    Trong ngành công nghệ, thức khuya viết mã, ôm đồm các nhiệm vụ làm thêm ngoài giờ hoặc tự làm thay việc đồng nghiệp liên tục sẽ nhanh chóng vắt kiệt năng lượng của bạn. Bạn không thể cống hiến lâu dài nếu cơ thể suy sụp. Hãy xây dựng thói quen làm việc có kế hoạch, từ chối công việc quá tải phi lý và ngủ đủ giấc.
+  `;
+  
+  // Render achievements, virtue scorecard, and decision log
+  renderAchievements();
+  renderVirtuesAdvice();
+  renderDecisionTimeline();
+  
+  // Render line chart
   drawChart();
 }
 
@@ -462,100 +898,446 @@ function showResult() {
   document.getElementById('screen-game').classList.add('hidden');
   document.getElementById('screen-result').classList.remove('hidden');
   
+  // Tính toán kết luận phù hợp với lựa chọn của người chơi
   const total = stats.can + stats.kiem + stats.liem + stats.chinh;
-  const min = Math.min(stats.can, stats.kiem, stats.liem, stats.chinh);
+  const minVirtue = Math.min(stats.can, stats.kiem, stats.liem, stats.chinh);
   
-  let ending;
-  if (total >= 32 && min >= 6 && stats.health >= 7) {
-    ending = { title: "🌟 Lập Trình Viên Mẫu Mực", text: "Bạn là hiện thân của tư tưởng Hồ Chí Minh trong ngành IT! Cần cù, tiết kiệm, trong sạch và ngay thẳng - bạn không chỉ giỏi code mà còn là tấm gương đạo đức nghề nghiệp. Đồng nghiệp kính trọng, khách hàng tin tưởng, và sự nghiệp phát triển bền vững." };
-  } else if (total >= 24 && stats.health >= 5) {
-    ending = { title: "👍 Lập Trình Viên Tốt", text: "Bạn có nền tảng đạo đức vững vàng và năng lực chuyên môn tốt. Vẫn còn một số khía cạnh cần cải thiện, nhưng nhìn chung bạn đang đi đúng hướng theo tư tưởng Bác Hồ. Hãy tiếp tục rèn luyện!" };
-  } else if (total >= 16 && stats.health >= 3) {
-    ending = { title: "⚠️ Cần Cố Gắng Hơn", text: "Con đường trở thành lập trình viên có đạo đức còn nhiều thử thách. Bạn đã có những lựa chọn chưa thực sự phù hợp. Hãy nhớ lời Bác: 'Cần, Kiệm, Liêm, Chính' là nền tảng của mọi thành công bền vững." };
-  } else {
-    ending = { title: "❌ Lạc Lối", text: "Bạn đã đánh mất nhiều giá trị đạo đức quan trọng. Trong ngành IT, thiếu liêm chính và cần kiệm sẽ dẫn đến thất bại. Hãy đọc lại tư tưởng Hồ Chí Minh và bắt đầu lại hành trình rèn luyện bản thân." };
+  // Xác định phẩm chất nổi trội nhất và kém nhất
+  const virtuesMap = {
+    can: { name: 'Cần (Diligence)', stat: stats.can },
+    kiem: { name: 'Kiệm (Optimization)', stat: stats.kiem },
+    liem: { name: 'Liêm (Integrity)', stat: stats.liem },
+    chinh: { name: 'Chính (Honesty)', stat: stats.chinh }
+  };
+  
+  let highestKey = 'can';
+  let lowestKey = 'can';
+  
+  for (let key in virtuesMap) {
+    if (virtuesMap[key].stat > virtuesMap[highestKey].stat) highestKey = key;
+    if (virtuesMap[key].stat < virtuesMap[lowestKey].stat) lowestKey = key;
   }
   
+  let ending = { title: "", text: "", avatar: "💻" };
+  
+  // 1. Phân loại cấu hình danh hiệu phù hợp dựa trên điểm số
+  if (total >= 32 && minVirtue >= 7 && stats.health >= 7) {
+    ending.title = "🌟 Đại Sứ Cần - Kiệm - Liêm - Chính";
+    ending.avatar = "🏆";
+    ending.text = "Bạn là hiện thân sống động của tư tưởng Hồ Chí Minh trong ngành công nghệ! Bạn siêng năng tự học, tối ưu hóa code xuất sắc, tôn trọng tuyệt đối bản quyền/riêng tư và thẳng thắn chịu trách nhiệm. Đồng nghiệp kính trọng, khách hàng tin tưởng tuyệt đối, sự nghiệp của bạn đang tiến lên vô cùng bền vững.";
+  } else if (stats[highestKey] >= 8 && total >= 24 && stats.health >= 5) {
+    // Ưu thế vượt trội của một đức tính
+    if (highestKey === 'can') {
+      ending.title = "🔥 Lập Trình Viên Cần Mẫn";
+      ending.avatar = "⚡";
+      ending.text = "Thế mạnh cốt lõi của bạn là sự siêng năng, cần cù chịu khó học công nghệ mới, hướng dẫn Junior và không ngại gánh việc khó. Bạn luôn nỗ lực hết mình vì công việc chung. Hãy chú ý giữ gìn sức khỏe và nâng cao tư duy tối ưu để không bị quá tải.";
+    } else if (highestKey === 'kiem') {
+      ending.title = "💎 Hiệp Sĩ Tối Ưu Hóa";
+      ending.avatar = "⚙️";
+      ending.text = "Bạn có khả năng xuất sắc trong việc tiết kiệm tài nguyên hệ thống, tối ưu ngân sách công cụ và ưu tiên giải pháp mã nguồn mở an toàn. Bạn giúp công ty hoạt động hiệu quả với chi phí tối thiểu. Hãy chia sẻ thêm kiến thức này cho cả team cùng tiến bộ.";
+    } else if (highestKey === 'liem') {
+      ending.title = "🛡️ Người Bảo Vệ Liêm Chính";
+      ending.avatar = "🛡️";
+      ending.text = "Bạn đặt đạo đức nghề nghiệp, bản quyền phần mềm và quyền riêng tư của khách hàng lên hàng đầu. Bạn không bao giờ thỏa hiệp với lợi ích bất chính hay hành vi mờ ám. Sự trong sạch giúp bạn trở thành chỗ dựa đáng tin cậy nhất trong nhóm.";
+    } else if (highestKey === 'chinh') {
+      ending.title = "⚖️ Kỹ Sư Chính Trực";
+      ending.avatar = "⚖️";
+      ending.text = "Điểm sáng lớn nhất ở bạn là sự trung thực, thẳng thắn phản biện vì cái chung, dũng cảm nhận trách nhiệm khi dự án thất bại và báo cáo thành tích chân thực. Bạn tạo ra văn hóa cởi mở và trong sạch cho dự án. Hãy giữ vững ngọn lửa chính trực này.";
+    }
+  } else if (minVirtue >= 5 && stats.health >= 6) {
+    ending.title = "⚖️ Kỹ Sư Cân Bằng & Vững Vàng";
+    ending.avatar = "🧩";
+    ending.text = "Bạn biết cách điều phối hài hòa giữa các phẩm chất cần cù, tối ưu, trung thực và liêm khiết mà vẫn duy trì sức khỏe tốt. Lựa chọn của bạn an toàn, hợp lý giúp bạn thăng tiến đều đặn và có cuộc sống tinh thần lành mạnh, ổn định.";
+  } else if (total >= 16 && stats.health >= 4) {
+    ending.title = "🌱 Lập Trình Viên Tập Sự";
+    ending.avatar = "🌾";
+    ending.text = "Bạn đã có nền móng đạo đức nhưng đôi lúc còn đưa ra những quyết định vội vã, chưa thực sự tối ưu hoặc e ngại chịu trách nhiệm. Hãy tiếp tục học hỏi, chú ý hơn đến quy chuẩn đạo đức nghề nghiệp để vươn lên thành kỹ sư chuyên nghiệp.";
+  } else {
+    ending.title = "⚠️ Lập Trình Viên Cần Rèn Luyện Thêm";
+    ending.avatar = "🚨";
+    ending.text = "Nhiều lựa chọn của bạn trong quá trình làm việc đã xâm phạm đến các giá trị cốt lõi (sử dụng code lậu, lén nhận việc ngoài, trốn tránh lỗi lầm). Đạo đức chính là cái gốc để lập nghiệp lâu dài. Bạn cần nghiêm túc soi xét lại hành trình và rèn luyện bản thân.";
+  }
+  
+  document.getElementById('profile-avatar-container').textContent = ending.avatar;
   document.getElementById('ending-text').textContent = ending.title;
-  document.getElementById('ending-story').innerHTML = `<p class="text-gray-300 leading-relaxed">${ending.text}</p>`;
+  document.getElementById('ending-story').innerHTML = ending.text;
   
-  document.getElementById('final-stats').innerHTML = `
-    <div class="bg-yellow-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-yellow-300">${stats.can}</div><div class="text-xs">Cần</div></div>
-    <div class="bg-green-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-green-300">${stats.kiem}</div><div class="text-xs">Kiệm</div></div>
-    <div class="bg-blue-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-blue-300">${stats.liem}</div><div class="text-xs">Liêm</div></div>
-    <div class="bg-purple-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-purple-300">${stats.chinh}</div><div class="text-xs">Chính</div></div>
-    <div class="bg-red-500/20 rounded-xl p-3"><div class="text-2xl font-bold text-red-300">${stats.health}</div><div class="text-xs">Sức Khỏe</div></div>
-  `;
+  // 2. Điền lời khuyên từ Bác Hồ dựa trên đức tính có điểm thấp nhất
+  renderHoAdvice(lowestKey);
   
+  // 3. Render các bảng/lưới thông tin
+  renderFinalStatsGrid();
+  renderAchievements();
+  renderVirtuesAdvice();
+  renderDecisionTimeline();
+  
+  // 4. Vẽ biểu đồ Canvas
   drawChart();
+}
+
+function renderHoAdvice(lowestKey) {
+  const advices = {
+    can: {
+      quote: `"Cần tức là siêng năng, chăm chỉ, cố gắng dẻo dai. Người siêng năng thì mau tiến bộ. Lười biếng là kẻ thù của học tập, của sự nghiệp."`,
+      citation: `— Soạn thảo 'Sửa đổi lối làm việc' (10/1947)`,
+      reflection: `Điểm số "Cần" của bạn thấp cho thấy bạn còn e ngại học công nghệ mới, thích làm việc cầm chừng hoặc né tránh nhiệm vụ khó. Lĩnh vực IT luôn thay đổi từng ngày, nếu không chăm chỉ học hỏi và dấn thân, bạn sẽ sớm tụt hậu. Hãy thiết lập thói quen tự học 30 phút mỗi ngày và tích cực giúp đỡ đồng nghiệp xung quanh.`
+    },
+    kiem: {
+      quote: `"Kiệm là tiết kiệm, không hoang phí. Tiết kiệm thời giờ, tiết kiệm của cải của công, của tư... 'Kiệm mà không Cần, thì không tăng gia sản xuất được. Cần mà không Kiệm, thì làm chừng nào xào chừng nấy'."`,
+      citation: `— Trích bài nói chuyện tại Lớp Huấn luyện Cán bộ (1949)`,
+      reflection: `Chỉ số "Kiệm" hạn chế phản ánh việc bạn chưa tối ưu tài nguyên dự án (chọn tool quá đắt đỏ không cần thiết, làm lãng phí công sức nhóm). Hãy rèn luyện tư duy tinh gọn (Lean development): tìm giải pháp open-source, tối ưu thuật toán giảm tài nguyên cloud, và lên kế hoạch làm việc khoa học để không lãng phí thời gian.`
+    },
+    liem: {
+      quote: `"Liêm tức là trong sạch, không tham lam. Chữ Liêm đi đôi với chữ Kiệm... Một người không Liêm thì việc gì cũng có thể làm xấu, làm hại tập thể."`,
+      citation: `— Trích tác phẩm 'Cần Kiệm Liêm Chính' (1949)`,
+      reflection: `Chỉ số "Liêm" chưa cao chứng tỏ bạn đã có quyết định thiếu liêm chính như sao chép mã lậu vi phạm bản quyền, trục lợi hoa hồng hoặc lén lút nhận việc làm thêm trong giờ hành chính của công ty. Uy tín nghề nghiệp cần tích lũy cả đời nhưng có thể mất đi chỉ vì một phút tham lam. Hãy tôn trọng tuyệt đối quyền tác giả và quyền riêng tư người dùng.`
+    },
+    chinh: {
+      quote: `"Chính nghĩa là thẳng thắn, đứng đắn. Đối với mình: không tự kiêu, tự đại. Đối với người: không nịnh hót kẻ trên, không khinh bỉ kẻ dưới. Đối với việc: việc thiện thì dù nhỏ mấy cũng làm, việc ác thì dù nhỏ mấy cũng tránh."`,
+      citation: `— Trích bài viết trên báo Cứu Quốc (1949)`,
+      reflection: `Chỉ số "Chính" thấp cho thấy bạn có xu hướng đổ lỗi cho người khác khi dự án hỏng, trốn tránh sửa bug hoặc phóng đại năng lực cá nhân. Để tiến xa, hãy dũng cảm nhận khuyết điểm, thẳng thắn góp ý xây dựng và trung thực với mọi số liệu báo cáo thành tích. Sự trung thực sẽ tạo ra sự tin tưởng dài lâu.`
+    },
+    health: {
+      quote: `"Mỗi một người dân yếu ớt, tức là cả nước yếu ớt, mỗi một người dân mạnh khỏe, tức là cả nước mạnh khỏe. Việc rèn luyện thể chất là bổn phận của mỗi người yêu nước."`,
+      citation: `— Trích lời kêu gọi toàn dân tập thể dục (3/1946)`,
+      reflection: `Sức khỏe của bạn sụt giảm do làm việc quá sức hoặc gánh vác thay việc của đồng nghiệp không khoa học. Hãy học cách từ chối thông minh, phân chia công việc hợp lý và không lạm dụng cafein hay thức đêm. Một cơ thể khỏe mạnh mới gánh vác được những dự án lớn lâu dài.`
+    }
+  };
+  
+  const advice = advices[lowestKey];
+  document.getElementById('ho-quote').innerHTML = `
+    "${advice.quote}"
+    <br><span class="block text-right text-xs mt-1 text-amber-500 font-semibold">${advice.citation}</span>
+  `;
+  document.getElementById('ho-reflection').textContent = advice.reflection;
+}
+
+function renderFinalStatsGrid() {
+  const container = document.getElementById('final-stats');
+  container.innerHTML = `
+    <div class="glass-card rounded-2xl p-4 text-center border border-yellow-500/15 glow-yellow">
+     <div class="text-3xl font-extrabold text-yellow-300">${stats.can}</div>
+     <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">🔥 Cần</div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 text-center border border-green-500/15 glow-green">
+     <div class="text-3xl font-extrabold text-green-300">${stats.kiem}</div>
+     <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">💎 Kiệm</div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 text-center border border-blue-500/15 glow-blue">
+     <div class="text-3xl font-extrabold text-blue-300">${stats.liem}</div>
+     <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">🛡️ Liêm</div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 text-center border border-purple-500/15 glow-purple">
+     <div class="text-3xl font-extrabold text-purple-300">${stats.chinh}</div>
+     <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">⚖️ Chính</div>
+    </div>
+    <div class="glass-card rounded-2xl p-4 text-center border border-red-500/15 glow-red col-span-2 md:col-span-1">
+     <div class="text-3xl font-extrabold text-red-400">${stats.health}</div>
+     <div class="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">❤️ Sức Khỏe</div>
+    </div>
+  `;
+}
+
+function renderAchievements() {
+  const grid = document.getElementById('achievements-grid');
+  grid.innerHTML = '';
+  
+  let count = 0;
+  
+  achievements.forEach(ach => {
+    const isUnlocked = ach.condition(selectedChoices);
+    if (isUnlocked) count++;
+    
+    const card = document.createElement('div');
+    if (isUnlocked) {
+      card.className = "rounded-2xl p-4.5 bg-gradient-to-br from-yellow-500/10 to-amber-500/5 border border-yellow-500/30 flex gap-4 items-start glow-yellow";
+      card.innerHTML = `
+        <div class="text-3xl p-2 rounded-xl bg-yellow-500/10 border border-yellow-500/20">${ach.icon}</div>
+        <div>
+         <div class="flex items-center gap-2">
+          <span class="font-bold text-yellow-300 text-base">${ach.title}</span>
+          <span class="text-[10px] font-bold bg-yellow-500 text-slate-950 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Đã đạt</span>
+         </div>
+         <p class="text-xs text-gray-300 mt-1 font-light leading-relaxed">${ach.desc}</p>
+        </div>
+      `;
+    } else {
+      card.className = "rounded-2xl p-4.5 bg-black/20 border border-white/5 flex gap-4 items-start opacity-50 grayscale";
+      card.innerHTML = `
+        <div class="text-3xl p-2 rounded-xl bg-white/5 border border-white/10 text-gray-500">🔒</div>
+        <div>
+         <div class="flex items-center gap-2">
+          <span class="font-bold text-gray-400 text-base">${ach.title}</span>
+          <span class="text-[10px] font-semibold bg-white/10 text-gray-400 px-1.5 py-0.5 rounded-full uppercase tracking-wider">Khóa</span>
+         </div>
+         <p class="text-xs text-gray-500 mt-1 font-light leading-relaxed">${ach.desc}</p>
+        </div>
+      `;
+    }
+    grid.appendChild(card);
+  });
+  
+  document.getElementById('unlocked-count').textContent = count;
+}
+
+function renderVirtuesAdvice() {
+  const container = document.getElementById('virtues-advice-container');
+  container.innerHTML = '';
+  
+  const keys = ['can', 'kiem', 'liem', 'chinh'];
+  
+  keys.forEach(k => {
+    const score = stats[k];
+    let lvl = 'medium';
+    if (score >= 8) lvl = 'high';
+    else if (score < 5) lvl = 'low';
+    
+    const prof = moralProfiles[k];
+    const data = prof.levels[lvl];
+    
+    let borderClass = 'border-white/10';
+    let textClass = 'text-yellow-300';
+    let badgeClass = 'bg-yellow-500/10 text-yellow-300 border-yellow-500/20';
+    
+    if (k === 'can') {
+      borderClass = lvl === 'high' ? 'border-yellow-500/30 glow-yellow' : (lvl === 'low' ? 'border-red-500/20' : 'border-yellow-500/15');
+      textClass = 'text-yellow-300';
+      badgeClass = lvl === 'high' ? 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30' : (lvl === 'low' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20');
+    } else if (k === 'kiem') {
+      borderClass = lvl === 'high' ? 'border-green-500/30 glow-green' : (lvl === 'low' ? 'border-red-500/20' : 'border-green-500/15');
+      textClass = 'text-green-300';
+      badgeClass = lvl === 'high' ? 'bg-green-500/20 text-green-300 border-green-500/30' : (lvl === 'low' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-green-500/10 text-green-400 border-green-500/20');
+    } else if (k === 'liem') {
+      borderClass = lvl === 'high' ? 'border-blue-500/30 glow-blue' : (lvl === 'low' ? 'border-red-500/20' : 'border-blue-500/15');
+      textClass = 'text-blue-300';
+      badgeClass = lvl === 'high' ? 'bg-blue-500/20 text-blue-300 border-blue-500/30' : (lvl === 'low' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-blue-500/10 text-blue-400 border-blue-500/20');
+    } else if (k === 'chinh') {
+      borderClass = lvl === 'high' ? 'border-purple-500/30 glow-purple' : (lvl === 'low' ? 'border-red-500/20' : 'border-purple-500/15');
+      textClass = 'text-purple-300';
+      badgeClass = lvl === 'high' ? 'bg-purple-500/20 text-purple-300 border-purple-500/30' : (lvl === 'low' ? 'bg-red-500/10 text-red-400 border-red-500/20' : 'bg-purple-500/10 text-purple-400 border-purple-500/20');
+    }
+    
+    const card = document.createElement('div');
+    card.className = `rounded-2xl p-5 bg-white/5 border ${borderClass} flex flex-col justify-between transition-all duration-300 hover:shadow-lg`;
+    
+    card.innerHTML = `
+      <div>
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">${prof.icon}</span>
+            <span class="font-bold text-white text-base">${prof.name}</span>
+          </div>
+          <div class="flex gap-1.5 items-center">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${badgeClass}">${data.status}</span>
+            <span class="text-xs font-semibold bg-white/5 border border-white/10 px-2 py-0.5 rounded text-gray-300">${score}/10</span>
+          </div>
+        </div>
+        
+        <blockquote class="text-gray-300 italic font-light border-l-2 border-white/20 pl-3 py-0.5 leading-relaxed text-xs mb-3">
+          "${data.quote}"
+          <span class="block text-right text-[10px] text-gray-400 mt-1 font-semibold">${data.citation}</span>
+        </blockquote>
+      </div>
+      <p class="text-xs text-gray-300 mt-2 font-light leading-relaxed bg-black/20 p-3 rounded-xl border border-white/5">${data.advice}</p>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+function renderDecisionTimeline() {
+  const timeline = document.getElementById('decision-timeline');
+  timeline.innerHTML = '';
+  
+  selectedChoices.forEach((log, index) => {
+    const node = document.createElement('div');
+    node.className = "relative pl-12 fade-in";
+    node.style.animationDelay = `${index * 0.05}s`;
+    
+    // Tách hiệu ứng thành các badge nhỏ
+    let effectsHtml = '';
+    const ef = log.effects;
+    const virtues = [
+      { k: 'can', n: 'Cần', i: '🔥', c: ef.can > 0 ? 'text-yellow-400' : 'text-red-400' },
+      { k: 'kiem', n: 'Kiệm', i: '💎', c: ef.kiem > 0 ? 'text-green-400' : 'text-red-400' },
+      { k: 'liem', n: 'Liêm', i: '🛡️', c: ef.liem > 0 ? 'text-blue-400' : 'text-red-400' },
+      { k: 'chinh', n: 'Chính', i: '⚖️', c: ef.chinh > 0 ? 'text-purple-400' : 'text-red-400' },
+      { k: 'health', n: 'Máu', i: '❤️', c: ef.health > 0 ? 'text-rose-400' : 'text-red-400' }
+    ];
+    
+    virtues.forEach(v => {
+      const val = ef[v.k];
+      if (val !== 0) {
+        effectsHtml += `<span class="text-[10px] font-bold bg-white/5 border border-white/10 px-1.5 py-0.5 rounded ${v.c}">${v.i} ${v.n} ${val > 0 ? '+' : ''}${val}</span> `;
+      }
+    });
+    
+    node.innerHTML = `
+      <!-- Timeline Node Marker -->
+      <div class="absolute left-3.5 top-1.5 w-5 h-5 rounded-full bg-[#0b0f19] border-2 border-yellow-500 flex items-center justify-center text-[10px] font-bold z-10 text-yellow-400">
+       ${index + 1}
+      </div>
+      
+      <div class="glass-card rounded-2xl p-5 border border-white/5">
+       <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tình huống ${index + 1}</span>
+       <h4 class="text-sm font-semibold text-white mt-1 leading-snug flex items-center gap-1.5">
+        <span class="text-lg">${log.scenarioImage}</span> ${log.scenarioText}
+       </h4>
+       
+       <div class="my-3 p-3 rounded-xl bg-white/5 border border-white/5">
+        <div class="text-xs text-yellow-400 font-semibold mb-0.5">Lựa chọn của bạn:</div>
+        <p class="text-xs text-gray-200">${log.choiceText}</p>
+       </div>
+       
+       <div class="text-xs text-gray-400 leading-relaxed font-light">
+        <div class="text-xs text-green-400 font-semibold mb-0.5">Hệ quả:</div>
+        <p class="text-xs text-gray-300 italic mb-2">"${log.eventText}"</p>
+        <div class="flex flex-wrap gap-1.5 mt-1.5">${effectsHtml || '<span class="text-[10px] text-gray-500 italic">Không ảnh hưởng chỉ số</span>'}</div>
+       </div>
+      </div>
+    `;
+    
+    timeline.appendChild(node);
+  });
 }
 
 function drawChart() {
   const canvas = document.getElementById('chart-canvas');
   const ctx = canvas.getContext('2d');
   const inner = canvas.parentElement;
+  
+  // Set kích thước Canvas sắc nét trên màn hình Retina
   const naturalW = Math.max(inner.clientWidth || 600, 600);
   canvas.width = naturalW * 2;
-  canvas.height = 500;
+  canvas.height = 520;
   ctx.scale(2, 2);
-  const w = naturalW;
-  const h = 250;
-  const padding = 40;
-  const chartW = w - padding * 2;
-  const chartH = h - padding * 2;
   
-  ctx.fillStyle = 'rgba(255,255,255,0.05)';
+  const w = naturalW;
+  const h = 260;
+  const paddingLeft = 35;
+  const paddingRight = 20;
+  const paddingTop = 30;
+  const paddingBottom = 30;
+  
+  const chartW = w - paddingLeft - paddingRight;
+  const chartH = h - paddingTop - paddingBottom;
+  
+  // Clear canvas
+  ctx.clearRect(0, 0, w, h);
+  
+  // Khắp nền mờ
+  ctx.fillStyle = 'rgba(10, 15, 30, 0.6)';
   ctx.fillRect(0, 0, w, h);
   
-  // Grid
-  ctx.strokeStyle = 'rgba(255,255,255,0.1)';
-  ctx.lineWidth = 0.5;
+  // Vẽ các đường lưới ngang tọa độ
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+  ctx.lineWidth = 1;
   for (let i = 0; i <= 10; i++) {
-    const y = padding + chartH - (i / 10) * chartH;
-    ctx.beginPath(); ctx.moveTo(padding, y); ctx.lineTo(w - padding, y); ctx.stroke();
+    const y = paddingTop + chartH - (i / 10) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(paddingLeft, y);
+    ctx.lineTo(w - paddingRight, y);
+    ctx.stroke();
+    
+    // Nhãn trục Y bên trái
+    if (i % 2 === 0) {
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.font = '500 9px Outfit';
+      ctx.textAlign = 'right';
+      ctx.fillText(i, paddingLeft - 8, y + 3);
+    }
   }
   
-  // Labels
-  ctx.fillStyle = 'rgba(255,255,255,0.5)';
-  ctx.font = '10px Be Vietnam Pro';
+  // Nhãn trục X dưới đáy (M0 -> M10)
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+  ctx.font = '600 9px Outfit';
   ctx.textAlign = 'center';
   for (let i = 0; i <= 10; i++) {
-    const x = padding + (i / 10) * chartW;
-    ctx.fillText(`M${i}`, x, h - 10);
-  }
-  ctx.textAlign = 'right';
-  for (let i = 0; i <= 10; i += 2) {
-    const y = padding + chartH - (i / 10) * chartH;
-    ctx.fillText(i, padding - 8, y + 4);
+    const x = paddingLeft + (i / 10) * chartW;
+    ctx.fillText(i === 0 ? 'Bắt đầu' : `Vòng ${i}`, x, h - paddingBottom + 16);
   }
   
-  const colors = ['#facc15','#4ade80','#60a5fa','#c084fc','#ef4444'];
-  const keys = ['can','kiem','liem','chinh','health'];
+  const colors = ['#facc15', '#4ade80', '#38bdf8', '#c084fc', '#f43f5e'];
+  const glowColors = [
+    'rgba(250, 204, 21, 0.2)',
+    'rgba(74, 222, 128, 0.2)',
+    'rgba(56, 189, 248, 0.2)',
+    'rgba(192, 132, 252, 0.2)',
+    'rgba(244, 63, 94, 0.2)'
+  ];
+  const keys = ['can', 'kiem', 'liem', 'chinh', 'health'];
   
+  // Vẽ từng đường chỉ số
   keys.forEach((key, ki) => {
-    ctx.strokeStyle = colors[ki];
-    ctx.lineWidth = 2;
+    ctx.shadowBlur = 0; 
+    
+    // 1. Tạo gradient dưới đường vẽ cho đẹp (Area Chart style)
+    const areaGrad = ctx.createLinearGradient(0, paddingTop, 0, h - paddingBottom);
+    areaGrad.addColorStop(0, glowColors[ki]);
+    areaGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    
+    ctx.fillStyle = areaGrad;
     ctx.beginPath();
     history.forEach((h2, i) => {
-      const x = padding + (i / 10) * chartW;
-      const y = padding + chartH - (h2[key] / 10) * chartH;
+      const x = paddingLeft + (i / 10) * chartW;
+      const y = paddingTop + chartH - (h2[key] / 10) * chartH;
+      if (i === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    });
+    ctx.lineTo(paddingLeft + (history.length - 1) * (chartW / 10), h - paddingBottom);
+    ctx.lineTo(paddingLeft, h - paddingBottom);
+    ctx.closePath();
+    ctx.fill();
+    
+    // 2. Vẽ đường Stroke phát sáng neon
+    ctx.strokeStyle = colors[ki];
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    
+    // Tạo bóng mờ giả neon
+    ctx.shadowColor = colors[ki];
+    ctx.shadowBlur = 4;
+    
+    ctx.beginPath();
+    history.forEach((h2, i) => {
+      const x = paddingLeft + (i / 10) * chartW;
+      const y = paddingTop + chartH - (h2[key] / 10) * chartH;
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     });
     ctx.stroke();
+    
+    // 3. Vẽ các nút tròn tại mỗi bước
+    ctx.shadowBlur = 0; // reset shadow
+    ctx.fillStyle = '#0b0f19';
+    ctx.strokeStyle = colors[ki];
+    ctx.lineWidth = 1.5;
+    history.forEach((h2, i) => {
+      const x = paddingLeft + (i / 10) * chartW;
+      const y = paddingTop + chartH - (h2[key] / 10) * chartH;
+      ctx.beginPath();
+      ctx.arc(x, y, 3, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.stroke();
+    });
   });
   
-  // Legend
+  // Vẽ nhãn Legend đẹp mắt góc trên
+  const labels = ['🔥 Cần', '💎 Kiệm', '🛡️ Liêm', '⚖️ Chính', '❤️ Sức Khỏe'];
   const legendY = 12;
-  const labels = ['Cần','Kiệm','Liêm','Chính','Sức Khỏe'];
-  let lx = padding;
+  let lx = paddingLeft;
   labels.forEach((l, i) => {
     ctx.fillStyle = colors[i];
-    ctx.fillRect(lx, legendY - 6, 12, 3);
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.font = '9px Be Vietnam Pro';
+    ctx.fillRect(lx, legendY - 5, 8, 4);
+    
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+    ctx.font = '600 8.5px Outfit';
     ctx.textAlign = 'left';
-    ctx.fillText(l, lx + 15, legendY);
-    lx += 60;
+    ctx.fillText(l, lx + 12, legendY - 1);
+    lx += (w - paddingLeft - paddingRight) / 5;
   });
 }
 
@@ -567,12 +1349,12 @@ function resetGame() {
 // Element SDK
 const defaultConfig = {
   game_title: 'Lập Trình Viên Theo Tư Tưởng HCM',
-  background_color: '#1a1a2e',
+  background_color: '#0c0f1d',
   text_color: '#ffffff',
   accent_color: '#facc15',
   surface_color: '#ffffff1a',
   action_color: '#ef4444',
-  font_family: 'Be Vietnam Pro',
+  font_family: 'Outfit',
   font_size: 16
 };
 
@@ -587,7 +1369,7 @@ window.elementSdk.init({
     const size = config.font_size || defaultConfig.font_size;
     
     document.getElementById('main-title').textContent = title;
-    document.getElementById('app').style.background = `linear-gradient(135deg, ${bg}, #16213e, #0f3460)`;
+    document.getElementById('app').style.background = `linear-gradient(135deg, ${bg}, #091124, #040814)`;
     document.getElementById('app').style.color = text;
     document.getElementById('app').style.fontFamily = `${font}, sans-serif`;
     document.getElementById('app').style.fontSize = size + 'px';
